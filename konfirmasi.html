@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Form Konfirmasi Kehadiran Sistem Presensi Elektronik Biro ORTALAMR – Isi data peserta untuk konfirmasi kehadiran kegiatan rapat dan acara." />
+  <title>Konfirmasi Kehadiran – Sistem Presensi Pusbangkom</title>
+
+  <!-- Google Fonts Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <!-- TODO: aktifkan saat integrasi backend -->
+  <!-- <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script> -->
+</head>
+
+<body class="konfirmasi-page">
+
+  <!-- ============================================================
+       HEADER
+       ============================================================ -->
+  <header class="konfirmasi-header" role="banner">
+    <div class="konfirmasi-header__inner">
+
+      <!-- Brand -->
+      <div class="konfirmasi-header__brand">
+        <div class="app-logo app-logo--sm" aria-hidden="true">
+          <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="3" y="3" width="9" height="9" rx="2" fill="white" fill-opacity="0.9"/>
+            <rect x="16" y="3" width="9" height="9" rx="2" fill="white" fill-opacity="0.6"/>
+            <rect x="3" y="16" width="9" height="9" rx="2" fill="white" fill-opacity="0.6"/>
+            <path d="M17 21.5L19.5 24L24 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="konfirmasi-header__title">Sistem Presensi Pusbangkom</div>
+          <div class="konfirmasi-header__subtitle">Sistem Presensi Rapat Secara Elektronik</div>
+        </div>
+      </div>
+
+      <!-- Back Button -->
+      <a href="index.html" class="konfirmasi-header__back" aria-label="Kembali ke Daftar Kegiatan">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="19" y1="12" x2="5" y2="12"/>
+          <polyline points="12 19 5 12 12 5"/>
+        </svg>
+        Kembali
+      </a>
+
+    </div>
+  </header>
+
+  <!-- ============================================================
+       MAIN CONTENT
+       ============================================================ -->
+  <main class="konfirmasi-main" id="main-content">
+
+    <!-- Form Card -->
+    <div class="form-card animate-fade-up" role="region" aria-labelledby="form-title">
+
+      <!-- ── SECTION 1: Header ── -->
+      <div class="form-header-section">
+        <div class="app-logo app-logo--lg" aria-hidden="true">
+          <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="3" y="3" width="9" height="9" rx="2" fill="white" fill-opacity="0.9"/>
+            <rect x="16" y="3" width="9" height="9" rx="2" fill="white" fill-opacity="0.6"/>
+            <rect x="3" y="16" width="9" height="9" rx="2" fill="white" fill-opacity="0.6"/>
+            <path d="M17 21.5L19.5 24L24 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h1 class="form-header-section__title" id="form-title">Sistem Presensi Elektronik</h1>
+        <p class="form-header-section__subtitle">Pusbangkom</p>
+        <span class="form-header-section__tag">
+          <!-- Ikon centang form -->
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          Form Konfirmasi Kehadiran
+        </span>
+      </div>
+
+      <!-- ── SECTION 2: Nama Kegiatan ── -->
+      <section class="form-section animate-fade-up animate-delay-1" aria-labelledby="label-kegiatan">
+        <div class="form-section__label" id="label-kegiatan">
+          <!-- Ikon kalender -->
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          Nama Kegiatan
+        </div>
+
+        <div class="kegiatan-info">
+          <h2 class="kegiatan-info__name" id="kegiatan-title">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Distinctio?
+          </h2>
+          <div class="kegiatan-info__meta" role="list">
+            <div class="kegiatan-info__meta-item" role="listitem">
+              <!-- Ikon lokasi -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              <span id="kegiatan-lokasi">Ruang Rapat Utama Lt. 5, Gedung A</span>
+            </div>
+            <div class="kegiatan-info__meta-item" role="listitem">
+              <!-- Ikon kalender -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+              <span>Rabu, 20 Agustus 2026</span>
+            </div>
+            <div class="kegiatan-info__meta-item" role="listitem">
+              <!-- Ikon jam -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              <span>09.00 – 12.00 WIB</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── SECTION 3: Kategori ── -->
+      <section class="form-section animate-fade-up animate-delay-2" aria-labelledby="label-kategori">
+        <div class="form-section__label" id="label-kategori">
+          <!-- Ikon tag -->
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+            <line x1="7" y1="7" x2="7.01" y2="7"/>
+          </svg>
+          Kategori
+        </div>
+
+        <div class="kategori-grid" role="group" aria-label="Pilihan kategori peserta">
+
+          <!-- Jenis Peserta -->
+          <fieldset style="border:none;padding:0;min-width:0;">
+            <legend class="radio-group__title">
+              Jenis Peserta <span aria-hidden="true">*</span>
+              <span class="sr-only">(wajib diisi)</span>
+            </legend>
+            <div class="radio-options" role="radiogroup">
+              <label class="radio-option" for="jenis-internal">
+                <input type="radio" id="jenis-internal" name="jenis_peserta" value="internal" required aria-required="true" />
+                <span class="radio-custom" aria-hidden="true"></span>
+                <span class="radio-label">Pegawai Internal</span>
+              </label>
+              <label class="radio-option" for="jenis-eksternal">
+                <input type="radio" id="jenis-eksternal" name="jenis_peserta" value="eksternal" />
+                <span class="radio-custom" aria-hidden="true"></span>
+                <span class="radio-label">Eksternal</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <!-- Tipe Peserta -->
+          <fieldset style="border:none;padding:0;min-width:0;">
+            <legend class="radio-group__title">
+              Tipe Peserta <span aria-hidden="true">*</span>
+              <span class="sr-only">(wajib diisi)</span>
+            </legend>
+            <div class="radio-options" role="radiogroup">
+              <label class="radio-option" for="tipe-narasumber">
+                <input type="radio" id="tipe-narasumber" name="tipe_peserta" value="narasumber" required aria-required="true" />
+                <span class="radio-custom" aria-hidden="true"></span>
+                <span class="radio-label">Narasumber</span>
+              </label>
+              <label class="radio-option" for="tipe-peserta">
+                <input type="radio" id="tipe-peserta" name="tipe_peserta" value="peserta" />
+                <span class="radio-custom" aria-hidden="true"></span>
+                <span class="radio-label">Peserta</span>
+              </label>
+            </div>
+          </fieldset>
+
+        </div>
+      </section>
+
+      <!-- ── SECTION 4: Data Peserta ── -->
+      <section class="form-section animate-fade-up animate-delay-3" aria-labelledby="label-data-peserta">
+        <div class="form-section__label" id="label-data-peserta">
+          <!-- Ikon user/orang -->
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          Data Peserta
+        </div>
+
+        <form id="konfirmasi-form" novalidate autocomplete="on" aria-label="Form data peserta konfirmasi kehadiran">
+
+          <!-- Row 1: Nama Peserta (full width) -->
+          <div class="form-grid form-grid--1 mb-4">
+            <div class="form-group">
+              <label class="form-label" for="nama-peserta">
+                Nama Peserta <span aria-hidden="true">*</span>
+                <span class="sr-only">(wajib diisi)</span>
+              </label>
+              <input
+                type="text"
+                id="nama-peserta"
+                name="nama_peserta"
+                class="form-input"
+                placeholder="Ketik minimal 3 karakter..."
+                minlength="3"
+                required
+                aria-required="true"
+                aria-describedby="nama-peserta-hint"
+                autocomplete="name"
+              />
+              <span id="nama-peserta-hint" class="sr-only">Masukkan nama lengkap peserta, minimal 3 karakter.</span>
+            </div>
+          </div>
+
+          <!-- Row 2: Jabatan + Instansi (2 kolom) -->
+          <div class="form-grid form-grid--2 mb-4">
+            <div class="form-group">
+              <label class="form-label" for="jabatan">Jabatan</label>
+              <input
+                type="text"
+                id="jabatan"
+                name="jabatan"
+                class="form-input"
+                placeholder="Jabatan peserta"
+                autocomplete="organization-title"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="instansi">Instansi <span aria-hidden="true">*</span><span class="sr-only">(wajib)</span></label>
+              <input
+                type="text"
+                id="instansi"
+                name="instansi"
+                class="form-input"
+                placeholder="Nama instansi / lembaga"
+                required
+                aria-required="true"
+                autocomplete="organization"
+              />
+            </div>
+          </div>
+
+          <!-- Row 3: Unit Kerja (full width) -->
+          <div class="form-grid form-grid--1 mb-4">
+            <div class="form-group">
+              <label class="form-label" for="unit-kerja">Unit Kerja</label>
+              <input
+                type="text"
+                id="unit-kerja"
+                name="unit_kerja"
+                class="form-input"
+                placeholder="Biro, Pusat, Kantor Wilayah..."
+              />
+            </div>
+          </div>
+
+          <!-- Row 4: Golongan + NPWP + Nama Bank (3 kolom) -->
+          <div class="form-grid form-grid--3 mb-4">
+            <div class="form-group">
+              <label class="form-label" for="golongan">Golongan</label>
+              <input
+                type="text"
+                id="golongan"
+                name="golongan"
+                class="form-input"
+                placeholder="Mis. IV/a"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="npwp">NPWP</label>
+              <input
+                type="text"
+                id="npwp"
+                name="npwp"
+                class="form-input"
+                placeholder="XX.XXX.XXX.X-XXX.XXX"
+                autocomplete="off"
+                inputmode="numeric"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="nama-bank">Nama Bank</label>
+              <input
+                type="text"
+                id="nama-bank"
+                name="nama_bank"
+                class="form-input"
+                placeholder="Mis. Bank BRI"
+              />
+            </div>
+          </div>
+
+          <!-- Row 5: NIP/NRP/NIK + No. WhatsApp + E-mail (3 kolom) -->
+          <div class="form-grid form-grid--3">
+            <div class="form-group">
+              <label class="form-label" for="nip-nik">NIP / NRP / NIK <span aria-hidden="true">*</span><span class="sr-only">(wajib)</span></label>
+              <input
+                type="text"
+                id="nip-nik"
+                name="nip_nik"
+                class="form-input"
+                placeholder="Nomor identitas pegawai"
+                required
+                aria-required="true"
+                inputmode="numeric"
+                autocomplete="off"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="no-whatsapp">No. WhatsApp <span aria-hidden="true">*</span><span class="sr-only">(wajib)</span></label>
+              <input
+                type="tel"
+                id="no-whatsapp"
+                name="no_whatsapp"
+                class="form-input"
+                placeholder="08xx-xxxx-xxxx"
+                required
+                aria-required="true"
+                autocomplete="tel"
+                inputmode="tel"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="email">E-mail <span aria-hidden="true">*</span><span class="sr-only">(wajib)</span></label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="form-input"
+                placeholder="alamat@email.com"
+                required
+                aria-required="true"
+                autocomplete="email"
+                inputmode="email"
+              />
+            </div>
+          </div>
+
+        </form>
+      </section>
+
+      <!-- ── SECTION 5: Verifikasi ── -->
+      <section class="form-section animate-fade-up animate-delay-4" aria-labelledby="label-verifikasi">
+        <div class="form-section__label" id="label-verifikasi">
+          <!-- Ikon perisai/shield -->
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          Verifikasi
+        </div>
+
+        <p class="verifikasi-hint">
+          Selesaikan verifikasi di bawah ini sebelum mengirim konfirmasi kehadiran Anda.
+        </p>
+
+        <!-- Cloudflare Turnstile Widget Area -->
+        <!-- TODO: aktifkan script Turnstile asli saat integrasi backend:
+             <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+        -->
+        <div class="turnstile-wrap">
+          <!-- Placeholder Turnstile (non-fungsional, tampilan mock saja) -->
+          <!-- TODO: ganti div di bawah dengan widget Turnstile asli saat backend siap:
+               <div class="cf-turnstile" data-sitekey="YOUR_SITE_KEY" data-callback="onTurnstileVerified"></div>
+          -->
+          <div
+            class="turnstile-mock"
+            id="turnstile-mock"
+            role="button"
+            tabindex="0"
+            aria-label="Verifikasi keamanan Cloudflare Turnstile – klik untuk memverifikasi"
+            aria-pressed="false"
+            aria-live="polite"
+          >
+            <!-- Checkbox visual -->
+            <div class="turnstile-mock__checkbox" aria-hidden="true">
+              <!-- Centang (tampil saat verified) -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </div>
+
+            <!-- Teks status -->
+            <span class="turnstile-mock__text" id="turnstile-text">Saya bukan robot</span>
+
+            <!-- Cloudflare Branding -->
+            <div class="turnstile-mock__brand" aria-hidden="true">
+              <!-- Cloudflare logo (simplified SVG) -->
+              <svg class="turnstile-mock__brand-logo" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M21.1 13.2c.1-.4.1-.8 0-1.2-.8-3.4-4.1-5.9-7.9-5.9-3.2 0-6 1.8-7.4 4.5-.3 0-.5-.1-.8-.1-2.2 0-4 1.7-4 3.8s1.8 3.8 4 3.8h15.4c1.8 0 3.2-1.4 3.2-3.1-.1-1.5-1.2-2.7-2.5-2.9V13.2z" fill="#F6821F"/>
+                <path d="M22.6 13.8h-.3c-.1 0-.2-.1-.2-.2l-.2-.8c-.2-.8-.9-1.4-1.8-1.4-.3 0-.6.1-.9.2-.4-2.2-2.4-3.9-4.8-3.9-2.7 0-4.8 2.1-4.8 4.7v.2c-.2-.1-.4-.1-.7-.1-1.4 0-2.5 1.1-2.5 2.4s1.1 2.4 2.5 2.4h13.7c1.1 0 2-.8 2-1.8s-.9-1.7-2-1.7z" fill="#FBAD41"/>
+              </svg>
+              <div class="turnstile-mock__brand-text">Cloudflare<br/>Turnstile</div>
+              <div class="turnstile-mock__brand-links">Privasi · Bantuan</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          form="konfirmasi-form"
+          class="btn btn-gold btn-full"
+          id="btn-submit"
+          disabled
+          aria-disabled="true"
+          aria-describedby="submit-hint"
+        >
+          <!-- Ikon kirim/send -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="22" y1="2" x2="11" y2="13"/>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+          Kirim Konfirmasi
+        </button>
+        <p class="verifikasi-hint mt-2" id="submit-hint" aria-live="polite">
+          <!-- JS akan update teks ini setelah verifikasi -->
+          Selesaikan verifikasi Turnstile terlebih dahulu untuk mengaktifkan tombol kirim.
+        </p>
+
+      </section>
+
+    </div><!-- /form-card -->
+
+  </main>
+
+  <!-- Script -->
+  <!-- TODO: inisialisasi Firebase App & Firestore di sini saat backend siap -->
+  <!-- TODO: import { initializeApp } from "firebase/app"; -->
+  <!-- TODO: import { getFirestore, collection, addDoc } from "firebase/firestore"; -->
+  <script src="js/konfirmasi.js" defer></script>
+
+</body>
+</html>
