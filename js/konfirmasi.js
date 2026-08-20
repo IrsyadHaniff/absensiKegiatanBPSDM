@@ -1,5 +1,5 @@
 /**
- * konfirmasi.js — Sistem Presensi Elektronik Biro ORTALAMR
+ * konfirmasi.js — Sistem Presensi Elektronik Pusbangkom
  * Halaman: Form Konfirmasi Kehadiran (konfirmasi.html)
  *
  * TODO: inisialisasi Firebase App & Firestore di sini saat backend siap
