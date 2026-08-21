@@ -44,13 +44,19 @@
   }
   </script>
 
-  <!-- Google Fonts: Poppins -->
+  <!-- Google Fonts: Poppins — async (non-blocking) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="preload" as="style"
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+    onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  </noscript>
 
   <!-- Stylesheet -->
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/konfirmasi.css" />
 
   <!-- TODO: aktifkan saat integrasi backend -->
   <!-- <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script> -->
@@ -80,7 +86,7 @@
       </div>
 
       <!-- Back Button -->
-      <a href="index.html" class="konfirmasi-header-back" aria-label="Kembali ke Daftar Kegiatan">
+      <a href="/" class="konfirmasi-header-back" aria-label="Kembali ke Daftar Kegiatan">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <line x1="19" y1="12" x2="5" y2="12"/>
           <polyline points="12 19 5 12 12 5"/>

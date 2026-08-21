@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
@@ -12,7 +12,7 @@
   <meta name="robots" content="index, follow" />
 
   <!-- SEO: Canonical URL -->
-  <link rel="canonical" href="https://absensi-pusbangkom.web.app/index.html" />
+  <link rel="canonical" href="https://absensikegiatanpusbangkom.web.app/" />
 
   <!-- SEO: Open Graph (untuk berbagi di media sosial) -->
   <meta property="og:type" content="website" />
@@ -20,7 +20,7 @@
   <meta property="og:site_name" content="Sistem Presensi Pusbangkom" />
   <meta property="og:title" content="Daftar Kegiatan - Sistem Presensi Elektronik Pusbangkom" />
   <meta property="og:description" content="Lihat dan ikuti daftar kegiatan rapat serta acara Pusbangkom. Isi presensi elektronik atau konfirmasi kehadiran Anda dengan mudah dan cepat." />
-  <meta property="og:url" content="https://absensi-pusbangkom.web.app/index.html" />
+  <meta property="og:url" content="https://absensikegiatanpusbangkom.web.app/" />
 
   <!-- SEO: Twitter Card -->
   <meta name="twitter:card" content="summary" />
@@ -34,20 +34,31 @@
     "@type": "WebPage",
     "name": "Daftar Kegiatan - Sistem Presensi Elektronik Pusbangkom",
     "description": "Lihat dan ikuti daftar kegiatan rapat serta acara Pusbangkom. Isi presensi elektronik atau konfirmasi kehadiran Anda dengan mudah dan cepat.",
-    "url": "https://absensi-pusbangkom.web.app/index.html",
+    "url": "https://absensikegiatanpusbangkom.web.app/",
     "inLanguage": "id",
     "publisher": {
       "@type": "Organization",
       "name": "Pusbangkom",
-      "url": "https://absensi-pusbangkom.web.app"
+      "url": "https://absensikegiatanpusbangkom.web.app"
     }
   }
   </script>
 
-  <!-- Google Fonts: Poppins -->
+  <!-- Google Fonts: Poppins — async (non-blocking) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- Preload most-used Poppins woff2 weights for faster rendering -->
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="https://fonts.gstatic.com/s/poppins/v24/pxiEyp8kv8JHgFVrJJfecnFHGPc.woff2" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="https://fonts.gstatic.com/s/poppins/v24/pxiByp8kv8JHgFVrLDD4Z1xlFd2JQEk.woff2" />
+  <!-- Load font CSS asynchronously to avoid render-blocking -->
+  <link rel="preload" as="style"
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+    onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  </noscript>
 
   <!-- Stylesheet -->
   <link rel="stylesheet" href="css/styles.css" />
@@ -65,7 +76,7 @@
     <div class="site-header-inner">
 
       <!-- Brand / Logo -->
-      <a href="index.html" class="site-header-brand" aria-label="Beranda Sistem Presensi Elektronik Pusbangkom">
+      <a href="/" class="site-header-brand" aria-label="Beranda Sistem Presensi Elektronik Pusbangkom">
         <!-- Logomark -->
         <div class="site-header-logomark" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
