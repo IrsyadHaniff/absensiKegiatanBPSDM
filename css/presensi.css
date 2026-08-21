@@ -1,0 +1,669 @@
+/* ============================================================
+   presensi.css - Tema Halaman Form Presensi
+   Warna utama: Ungu/Violet (#5B4FCF dan variannya)
+   ============================================================ */
+
+/* --- Design Tokens Halaman Presensi --- */
+:root {
+  --presensi-bg:          #4A3FB5;
+  --presensi-bg-deep:     #3B31A0;
+  --presensi-card-bg:     rgba(255, 255, 255, 0.09);
+  --presensi-card-border: rgba(255, 255, 255, 0.14);
+  --presensi-input-bg:    rgba(255, 255, 255, 0.08);
+  --presensi-input-border:rgba(255, 255, 255, 0.18);
+  --presensi-text:        #FFFFFF;
+  --presensi-text-muted:  rgba(255, 255, 255, 0.55);
+  --presensi-label-color: rgba(255, 255, 255, 0.6);
+  --presensi-gold:        #F0C332;
+  --presensi-gold-dark:   #C99A1E;
+  --presensi-green:       #27AE60;
+  --presensi-green-light: #5FD68A;
+  --presensi-accent:      rgba(240, 195, 50, 0.2);
+}
+
+/* --- Body Override untuk Tema Presensi --- */
+.presensi-body {
+  background: linear-gradient(160deg, #5B4FCF 0%, #3D2FA0 50%, #2E2280 100%);
+  min-height: 100vh;
+  color: var(--presensi-text);
+  font-family: 'Poppins', system-ui, sans-serif;
+}
+
+/* ============================================================
+   HEADER PRESENSI
+   ============================================================ */
+.presensi-header {
+  text-align: center;
+  padding: 36px 24px 28px;
+  position: relative;
+  z-index: 10;
+}
+
+.presensi-header-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Logo kotak-kotak warna-warni */
+.presensi-logo {
+  width: 64px;
+  height: 64px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  padding: 10px;
+  backdrop-filter: blur(8px);
+}
+
+.presensi-logo svg {
+  width: 44px;
+  height: 44px;
+}
+
+.presensi-header-titles {
+  text-align: center;
+}
+
+.presensi-header-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--presensi-text);
+  line-height: 1.3;
+  margin-bottom: 4px;
+}
+
+.presensi-header-subtitle {
+  font-size: 13px;
+  color: var(--presensi-text-muted);
+  font-weight: 400;
+}
+
+/* ============================================================
+   MAIN CONTAINER
+   ============================================================ */
+.presensi-main {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 16px 80px;
+  position: relative;
+  z-index: 10;
+}
+
+/* ============================================================
+   CARD (Section wrapper)
+   ============================================================ */
+.presensi-card {
+  background: var(--presensi-card-bg);
+  border: 1px solid var(--presensi-card-border);
+  border-radius: 16px;
+  padding: 20px 20px 24px;
+  margin-bottom: 16px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* ============================================================
+   SECTION LABEL (judul section dalam card)
+   ============================================================ */
+.presensi-section-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--presensi-label-color);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.presensi-section-label svg {
+  color: var(--presensi-label-color);
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   INFO KEGIATAN
+   ============================================================ */
+.presensi-kegiatan-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.presensi-kegiatan-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--presensi-text);
+  line-height: 1.45;
+}
+
+.presensi-kegiatan-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+
+.presensi-kegiatan-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--presensi-text-muted);
+}
+
+.presensi-kegiatan-meta-item svg {
+  width: 13px;
+  height: 13px;
+  color: var(--presensi-gold);
+  flex-shrink: 0;
+}
+
+/* Badge "Rapat sedang berlangsung" */
+.presensi-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(39, 174, 96, 0.18);
+  border: 1px solid rgba(39, 174, 96, 0.4);
+  color: var(--presensi-green-light);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  width: fit-content;
+}
+
+.presensi-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--presensi-green);
+  box-shadow: 0 0 0 2px rgba(39, 174, 96, 0.3);
+  animation: pulse-dot 2s infinite;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   KATEGORI - Radio Groups
+   ============================================================ */
+.presensi-kategori-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.presensi-radio-group-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--presensi-text);
+  margin-bottom: 10px;
+  display: block;
+}
+
+.presensi-radio-group-title span {
+  color: var(--presensi-gold);
+}
+
+.presensi-radio-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.presensi-radio-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border: 1px solid var(--presensi-input-border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+  user-select: none;
+  position: relative;
+}
+
+.presensi-radio-option:hover {
+  border-color: rgba(240, 195, 50, 0.5);
+  background: rgba(240, 195, 50, 0.07);
+}
+
+.presensi-radio-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.presensi-radio-custom {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color 0.15s ease;
+  position: relative;
+}
+
+.presensi-radio-custom::after {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--presensi-gold);
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.presensi-radio-option input[type="radio"]:checked ~ .presensi-radio-custom {
+  border-color: var(--presensi-gold);
+}
+
+.presensi-radio-option input[type="radio"]:checked ~ .presensi-radio-custom::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.presensi-radio-option:has(input[type="radio"]:checked) {
+  border-color: rgba(240, 195, 50, 0.55);
+  background: rgba(240, 195, 50, 0.09);
+}
+
+.presensi-radio-label {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+}
+
+.presensi-radio-option:has(input[type="radio"]:checked) .presensi-radio-label {
+  color: var(--presensi-gold);
+}
+
+.presensi-radio-option:focus-within {
+  outline: 2px solid var(--presensi-gold);
+  outline-offset: 1px;
+}
+
+/* ============================================================
+   FORM FIELDS
+   ============================================================ */
+.presensi-form-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.presensi-form-grid-1 { grid-template-columns: 1fr; }
+.presensi-form-grid-2 { grid-template-columns: 1fr 1fr; }
+.presensi-form-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+.presensi-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.presensi-form-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--presensi-text);
+  letter-spacing: 0.01em;
+}
+
+.presensi-form-label span[aria-hidden="true"] {
+  color: var(--presensi-gold);
+  margin-left: 2px;
+}
+
+.presensi-form-input {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--presensi-input-bg);
+  border: 1px solid var(--presensi-input-border);
+  border-radius: 10px;
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 14px;
+  color: var(--presensi-text);
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+  line-height: 1.5;
+}
+
+.presensi-form-input::placeholder {
+  color: rgba(255, 255, 255, 0.28);
+}
+
+.presensi-form-input:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.11);
+}
+
+.presensi-form-input:focus {
+  outline: none;
+  border-color: var(--presensi-gold);
+  background: rgba(240, 195, 50, 0.07);
+  box-shadow: 0 0 0 3px rgba(240, 195, 50, 0.18);
+}
+
+/* ============================================================
+   SIGNATURE PAD
+   ============================================================ */
+.signature-pad-wrap {
+  position: relative;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--presensi-input-border);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: crosshair;
+  margin-bottom: 8px;
+}
+
+.signature-canvas {
+  display: block;
+  width: 100%;
+  height: 180px;
+  touch-action: none;
+}
+
+/* Placeholder teks "tanda tangan di sini" */
+.signature-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 13px;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.signature-placeholder.hidden {
+  opacity: 0;
+}
+
+/* Tombol hapus tanda tangan */
+.presensi-clear-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s ease;
+  margin-top: 4px;
+}
+
+.presensi-clear-btn:hover {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* ============================================================
+   CHECKBOX PERNYATAAN
+   ============================================================ */
+.presensi-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  margin-top: 4px;
+}
+
+.presensi-checkbox-label input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.presensi-checkbox-custom {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: var(--presensi-input-bg);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s ease, background 0.15s ease;
+  position: relative;
+}
+
+.presensi-checkbox-custom::after {
+  content: '';
+  width: 9px;
+  height: 5px;
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+  transform: rotate(-45deg) translateY(-1px);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.presensi-checkbox-label:has(input:checked) .presensi-checkbox-custom {
+  background: var(--presensi-gold);
+  border-color: var(--presensi-gold);
+}
+
+.presensi-checkbox-label:has(input:checked) .presensi-checkbox-custom::after {
+  opacity: 1;
+}
+
+.presensi-checkbox-text {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.45;
+}
+
+/* ============================================================
+   TURNSTILE MOCK (Presensi)
+   ============================================================ */
+.presensi-turnstile-mock {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  padding: 14px 16px;
+  min-width: 280px;
+  max-width: 320px;
+  cursor: pointer;
+  transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.presensi-turnstile-mock:hover {
+  border-color: rgba(255, 255, 255, 0.24);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.presensi-turnstile-checkbox {
+  width: 26px;
+  height: 26px;
+  border: 2px solid rgba(255, 255, 255, 0.28);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.25s ease, border-color 0.25s ease;
+  position: relative;
+}
+
+.presensi-turnstile-checkbox svg {
+  width: 16px;
+  height: 16px;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  color: white;
+}
+
+.presensi-turnstile-text {
+  flex: 1;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
+  transition: color 0.15s ease;
+}
+
+.presensi-turnstile-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.presensi-turnstile-brand-logo {
+  width: 26px;
+  height: 26px;
+}
+
+.presensi-turnstile-brand-text {
+  font-size: 8px;
+  color: rgba(255, 255, 255, 0.3);
+  text-align: center;
+  line-height: 1.2;
+}
+
+.presensi-turnstile-brand-links {
+  font-size: 8px;
+  color: rgba(255, 255, 255, 0.22);
+  text-align: center;
+}
+
+/* State: verified */
+.presensi-turnstile-mock.is-verified {
+  border-color: rgba(39, 174, 96, 0.6);
+  background: rgba(39, 174, 96, 0.1);
+  box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.14);
+}
+
+.presensi-turnstile-mock.is-verified .presensi-turnstile-checkbox {
+  background: var(--presensi-green);
+  border-color: var(--presensi-green);
+}
+
+.presensi-turnstile-mock.is-verified .presensi-turnstile-checkbox svg {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.presensi-turnstile-mock.is-verified .presensi-turnstile-text {
+  color: var(--presensi-green-light);
+  font-weight: 600;
+}
+
+/* State: loading */
+.presensi-turnstile-mock.is-loading .presensi-turnstile-checkbox::before {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-top-color: var(--presensi-gold);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* ============================================================
+   SUBMIT BUTTON
+   ============================================================ */
+.presensi-submit-wrap {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+}
+
+.presensi-btn-submit {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px 24px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 12px;
+  font-family: 'Poppins', system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: not-allowed;
+  transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, transform 0.15s ease;
+  letter-spacing: 0.01em;
+}
+
+.presensi-btn-submit:not(:disabled) {
+  background: var(--presensi-gold);
+  border-color: var(--presensi-gold);
+  color: #1A1200;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(240, 195, 50, 0.35);
+}
+
+.presensi-btn-submit:not(:disabled):hover {
+  background: var(--presensi-gold-dark);
+  box-shadow: 0 6px 28px rgba(240, 195, 50, 0.45);
+  transform: translateY(-1px);
+}
+
+.presensi-btn-submit:not(:disabled):active {
+  transform: translateY(0) scale(0.98);
+}
+
+.presensi-submit-hint {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.35);
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 500px) {
+  .presensi-header-title {
+    font-size: 15px;
+  }
+
+  .presensi-kategori-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .presensi-form-grid-2,
+  .presensi-form-grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .presensi-turnstile-mock {
+    min-width: auto;
+    width: 100%;
+    max-width: 100%;
+  }
+}
