@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Form Presensi Rapat - Sistem Presensi Elektronik Pusbangkom</title>
+  <title>Form Presensi Rapat &ndash; Sistem Presensi Elektronik Pusbangkom</title>
   <meta name="description" content="Form presensi rapat elektronik Pusbangkom. Isi data peserta, tanda tangan digital, dan kirimkan kehadiran Anda." />
   <meta name="keywords" content="presensi, absensi, tanda tangan digital, rapat, Pusbangkom, form peserta" />
   <meta name="author" content="Pusbangkom" />
@@ -12,11 +12,11 @@
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="id_ID" />
   <meta property="og:site_name" content="Sistem Presensi Pusbangkom" />
-  <meta property="og:title" content="Form Presensi Rapat - Sistem Presensi Elektronik Pusbangkom" />
+  <meta property="og:title" content="Form Presensi Rapat &ndash; Sistem Presensi Elektronik Pusbangkom" />
   <meta property="og:description" content="Form presensi rapat elektronik Pusbangkom. Isi data peserta dan tanda tangan digital Anda." />
   <meta property="og:url" content="https://absensi-pusbangkom.web.app/presensi.html" />
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Form Presensi - Sistem Presensi Pusbangkom" />
+  <meta name="twitter:title" content="Form Presensi &ndash; Sistem Presensi Pusbangkom" />
   <meta name="twitter:description" content="Isi form presensi rapat Pusbangkom secara elektronik." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -31,247 +31,279 @@
   <header class="presensi-header" role="banner">
     <div class="presensi-header-inner">
 
-      <!-- Logo -->
-      <div class="presensi-logo" aria-hidden="true">
-        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="4" y="4" width="13" height="13" rx="3" fill="#F0C332" fill-opacity="0.9"/>
-          <rect x="21" y="4" width="13" height="13" rx="3" fill="#E8871A" fill-opacity="0.85"/>
-          <rect x="4" y="21" width="13" height="13" rx="3" fill="#C44B8B" fill-opacity="0.85"/>
-          <path d="M22 30.5L25 33.5L31 26" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+      <!-- Brand: Logomark + Titles -->
+      <div style="display:flex;align-items:center;gap:var(--space-3);flex:1;min-width:0;">
+        <!-- Logomark emas -->
+        <div class="presensi-logomark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 11l3 3L22 4"/>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+          </svg>
+        </div>
+        <div class="presensi-header-titles">
+          <h1 class="presensi-header-title">Sistem Presensi Pusbangkom</h1>
+          <p class="presensi-header-subtitle">Form Presensi Rapat</p>
+        </div>
       </div>
 
-      <!-- Judul -->
-      <div class="presensi-header-titles">
-        <h1 class="presensi-header-title">Sistem Presensi Elektronik Pusbangkom</h1>
-        <p class="presensi-header-subtitle">Form Presensi Rapat</p>
-      </div>
+      <!-- Back Button -->
+      <a href="index.html" class="presensi-header-back" aria-label="Kembali ke Daftar Kegiatan">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="19" y1="12" x2="5" y2="12"/>
+          <polyline points="12 19 5 12 12 5"/>
+        </svg>
+        Kembali
+      </a>
 
     </div>
   </header>
 
   <!-- MAIN -->
   <main class="presensi-main" id="main-content">
-    <form id="form-presensi" novalidate autocomplete="off">
 
-      <!-- SECTION 1: Nama Kegiatan -->
-      <section class="presensi-card animate-fade-up animate-delay-1" aria-labelledby="label-kegiatan-presensi">
-        <div class="presensi-section-label" id="label-kegiatan-presensi">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-            <line x1="16" y1="2" x2="16" y2="6"/>
-            <line x1="8" y1="2" x2="8" y2="6"/>
-            <line x1="3" y1="10" x2="21" y2="10"/>
+    <!-- Form Card Wrapper -->
+    <div class="presensi-form-card animate-fade-up" role="region" aria-labelledby="presensi-card-title">
+
+      <!-- Card Header dengan Logo -->
+      <div class="form-header-section">
+        <!-- Gold Logo Mark -->
+        <div class="app-logo app-logo--lg" aria-hidden="true" style="margin: 0 auto var(--space-5);">
+          <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="3" y="3" width="9" height="9" rx="2" fill="white" fill-opacity="0.9"/>
+            <rect x="16" y="3" width="9" height="9" rx="2" fill="white" fill-opacity="0.6"/>
+            <rect x="3" y="16" width="9" height="9" rx="2" fill="white" fill-opacity="0.6"/>
+            <path d="M17 21.5L19.5 24L24 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          Nama Kegiatan
         </div>
-
-        <div class="presensi-kegiatan-info">
-          <h2 class="presensi-kegiatan-name" id="kegiatan-title-presensi">
-            Kajian Pemberian Insentif Tambahan Berbasis Kinerja bagi Pegawai Kementerian ATR/BPN (Ditjen Pentag dan Ditjen PTPP)
-          </h2>
-          <div class="presensi-kegiatan-meta">
-            <div class="presensi-kegiatan-meta-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                <circle cx="12" cy="10" r="3"/>
-              </svg>
-              <span id="kegiatan-lokasi-presensi">Zoom Meeting</span>
-            </div>
-          </div>
-          <div class="presensi-status-badge">
-            <span class="presensi-status-dot" aria-hidden="true"></span>
-            Rapat sedang berlangsung
-          </div>
-        </div>
-      </section>
-
-      <!-- SECTION 2: Kategori -->
-      <section class="presensi-card animate-fade-up animate-delay-2" aria-labelledby="label-kategori-presensi">
-        <div class="presensi-section-label" id="label-kategori-presensi">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
-            <line x1="7" y1="7" x2="7.01" y2="7"/>
-          </svg>
-          Kategori
-        </div>
-
-        <div class="presensi-kategori-grid">
-          <!-- Jenis Peserta -->
-          <fieldset style="border:none;padding:0;min-width:0;">
-            <legend class="presensi-radio-group-title">Jenis Peserta <span aria-hidden="true">*</span></legend>
-            <div class="presensi-radio-options">
-              <label class="presensi-radio-option" id="label-jenis-internal">
-                <input type="radio" name="jenis-peserta" value="internal" id="jenis-internal" required />
-                <span class="presensi-radio-custom" aria-hidden="true"></span>
-                <span class="presensi-radio-label">Pegawai Internal</span>
-              </label>
-              <label class="presensi-radio-option" id="label-jenis-eksternal">
-                <input type="radio" name="jenis-peserta" value="eksternal" id="jenis-eksternal" />
-                <span class="presensi-radio-custom" aria-hidden="true"></span>
-                <span class="presensi-radio-label">Eksternal</span>
-              </label>
-            </div>
-          </fieldset>
-
-          <!-- Tipe Kehadiran -->
-          <fieldset style="border:none;padding:0;min-width:0;">
-            <legend class="presensi-radio-group-title">Tipe Kehadiran <span aria-hidden="true">*</span></legend>
-            <div class="presensi-radio-options">
-              <label class="presensi-radio-option" id="label-tipe-narasumber">
-                <input type="radio" name="tipe-kehadiran" value="narasumber" id="tipe-narasumber" required />
-                <span class="presensi-radio-custom" aria-hidden="true"></span>
-                <span class="presensi-radio-label">Narasumber</span>
-              </label>
-              <label class="presensi-radio-option" id="label-tipe-peserta">
-                <input type="radio" name="tipe-kehadiran" value="peserta" id="tipe-peserta" />
-                <span class="presensi-radio-custom" aria-hidden="true"></span>
-                <span class="presensi-radio-label">Peserta</span>
-              </label>
-            </div>
-          </fieldset>
-        </div>
-      </section>
-
-      <!-- SECTION 3: Data Peserta -->
-      <section class="presensi-card animate-fade-up animate-delay-3" aria-labelledby="label-data-peserta-presensi">
-        <div class="presensi-section-label" id="label-data-peserta-presensi">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-            <circle cx="12" cy="7" r="4"/>
-          </svg>
-          Data Peserta
-        </div>
-
-        <!-- Nama Peserta -->
-        <div class="presensi-form-grid presensi-form-grid-1 mb-4">
-          <div class="presensi-form-group">
-            <label class="presensi-form-label" for="nama-peserta">Nama Peserta <span aria-hidden="true">*</span></label>
-            <input type="text" id="nama-peserta" name="nama-peserta" class="presensi-form-input"
-              placeholder="Ketik minimal 3 karakter..." minlength="3" required autocomplete="name" />
-          </div>
-        </div>
-
-        <!-- Jabatan + Instansi -->
-        <div class="presensi-form-grid presensi-form-grid-2 mb-4">
-          <div class="presensi-form-group">
-            <label class="presensi-form-label" for="jabatan-presensi">Jabatan <span aria-hidden="true">*</span></label>
-            <input type="text" id="jabatan-presensi" name="jabatan" class="presensi-form-input"
-              placeholder="Direktur, Staf, dll..." required autocomplete="organization-title" />
-          </div>
-          <div class="presensi-form-group">
-            <label class="presensi-form-label" for="instansi-presensi">Instansi <span aria-hidden="true">*</span></label>
-            <input type="text" id="instansi-presensi" name="instansi" class="presensi-form-input"
-              placeholder="Ketik minimal 3 karakter..." minlength="3" required autocomplete="organization" />
-          </div>
-        </div>
-
-        <!-- Unit Kerja -->
-        <div class="presensi-form-grid presensi-form-grid-1 mb-4">
-          <div class="presensi-form-group">
-            <label class="presensi-form-label" for="unit-kerja">Unit Kerja <span aria-hidden="true">*</span></label>
-            <input type="text" id="unit-kerja" name="unit-kerja" class="presensi-form-input"
-              placeholder="Biro, Pusat, Kantor Wilayah..." required />
-          </div>
-        </div>
-
-        <!-- NIP + WA + Email -->
-        <div class="presensi-form-grid presensi-form-grid-3">
-          <div class="presensi-form-group">
-            <label class="presensi-form-label" for="nip-presensi">NIP / NRP / NIK</label>
-            <input type="text" id="nip-presensi" name="nip-nrp-nik" class="presensi-form-input"
-              placeholder="" inputmode="numeric" />
-          </div>
-          <div class="presensi-form-group">
-            <label class="presensi-form-label" for="whatsapp-presensi">No. WhatsApp</label>
-            <input type="tel" id="whatsapp-presensi" name="whatsapp" class="presensi-form-input"
-              placeholder="" autocomplete="tel" inputmode="tel" />
-          </div>
-          <div class="presensi-form-group">
-            <label class="presensi-form-label" for="email-presensi">E-mail</label>
-            <input type="email" id="email-presensi" name="email" class="presensi-form-input"
-              placeholder="contoh@email.com" autocomplete="email" inputmode="email" />
-          </div>
-        </div>
-      </section>
-
-      <!-- SECTION 4: Verifikasi -->
-      <section class="presensi-card animate-fade-up animate-delay-4" aria-labelledby="label-verifikasi-presensi">
-        <div class="presensi-section-label" id="label-verifikasi-presensi">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          </svg>
-          Verifikasi
-        </div>
-
-        <!-- Signature Pad -->
-        <div class="presensi-form-group" style="margin-bottom:12px;">
-          <label class="presensi-form-label" for="signature-canvas">Tanda Tangan <span aria-hidden="true">*</span></label>
-          <div class="signature-pad-wrap">
-            <canvas id="signature-canvas" class="signature-canvas" width="700" height="200"
-              aria-label="Kanvas tanda tangan" tabindex="0"></canvas>
-            <div class="signature-placeholder" id="signature-placeholder" aria-hidden="true">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 20h9"/>
-                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
-              </svg>
-              <span>Tanda tangan di sini</span>
-            </div>
-          </div>
-          <button type="button" class="presensi-clear-btn" id="btn-clear-signature" aria-label="Hapus tanda tangan">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <polyline points="3 6 5 6 21 6"/>
-              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-            </svg>
-            Hapus Tanda Tangan
-          </button>
-        </div>
-
-        <!-- Checkbox Pernyataan -->
-        <label class="presensi-checkbox-label" for="checkbox-pernyataan">
-          <input type="checkbox" id="checkbox-pernyataan" name="pernyataan" required />
-          <span class="presensi-checkbox-custom" aria-hidden="true"></span>
-          <span class="presensi-checkbox-text">Saya menyatakan ini adalah tanda tangan saya yang sebenarnya</span>
-        </label>
-
-        <!-- Turnstile Mock -->
-        <div style="margin-top: 20px;">
-          <div class="presensi-turnstile-mock" id="presensi-turnstile-mock"
-            role="button" tabindex="0" aria-label="Verifikasi: Saya bukan robot" aria-live="polite">
-            <div class="presensi-turnstile-checkbox" id="presensi-turnstile-checkbox" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
-            </div>
-            <span class="presensi-turnstile-text" id="presensi-turnstile-text">Saya bukan robot</span>
-            <div class="presensi-turnstile-brand" aria-hidden="true">
-              <svg class="presensi-turnstile-brand-logo" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M21.1 13.2c.1-.4.1-.8 0-1.2-.8-3.4-4.1-5.9-7.9-5.9-3.2 0-6 1.8-7.4 4.5-.3 0-.5-.1-.8-.1-2.2 0-4 1.7-4 3.8s1.8 3.8 4 3.8h15.4c1.8 0 3.2-1.4 3.2-3.1-.1-1.5-1.2-2.7-2.5-2.9V13.2z" fill="#F6821F"/>
-                <path d="M22.6 13.8h-.3c-.1 0-.2-.1-.2-.2l-.2-.8c-.2-.8-.9-1.4-1.8-1.4-.3 0-.6.1-.9.2-.4-2.2-2.4-3.9-4.8-3.9-2.7 0-4.8 2.1-4.8 4.7v.2c-.2-.1-.4-.1-.7-.1-1.4 0-2.5 1.1-2.5 2.4s1.1 2.4 2.5 2.4h13.7c1.1 0 2-.8 2-1.8s-.9-1.7-2-1.7z" fill="#FBAD41"/>
-              </svg>
-              <div class="presensi-turnstile-brand-text">Cloudflare<br/>Turnstile</div>
-              <div class="presensi-turnstile-brand-links">Privasi &middot; Bantuan</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Submit -->
-      <div class="presensi-submit-wrap animate-fade-up animate-delay-5">
-        <button type="submit" class="presensi-btn-submit" id="btn-submit-presensi"
-          disabled aria-disabled="true" aria-label="Kirim data kehadiran Anda">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <line x1="22" y1="2" x2="11" y2="13"/>
-            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-          </svg>
-          Kirim Kehadiran
-        </button>
-        <p class="presensi-submit-hint" id="presensi-submit-hint" role="status" aria-live="polite">
-          Lengkapi semua kolom wajib, tanda tangan, dan verifikasi untuk mengirim.
-        </p>
+        <p class="form-header-title" id="presensi-card-title">Sistem Presensi Elektronik</p>
+        <span class="form-header-tag">
+          Form Presensi Rapat
+        </span>
+        <!-- <p class="form-header-subtitle">Pusbangkom</p> -->
       </div>
 
-    </form>
+      <form id="form-presensi" novalidate autocomplete="off">
+
+        <!-- SECTION 1: Nama Kegiatan -->
+        <section class="presensi-card animate-fade-up animate-delay-1" aria-labelledby="label-kegiatan-presensi">
+          <div class="presensi-section-label" id="label-kegiatan-presensi">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            Nama Kegiatan
+          </div>
+
+          <div class="presensi-kegiatan-info">
+            <h2 class="presensi-kegiatan-name" id="kegiatan-title-presensi">
+              Kajian Pemberian Insentif Tambahan Berbasis Kinerja bagi Pegawai Kementerian ATR/BPN (Ditjen Pentag dan Ditjen PTPP)
+            </h2>
+            <div class="presensi-kegiatan-meta">
+              <div class="presensi-kegiatan-meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+                <span id="kegiatan-lokasi-presensi">Zoom Meeting</span>
+              </div>
+            </div>
+            <div class="presensi-status-badge">
+              <span class="presensi-status-dot" aria-hidden="true"></span>
+              Rapat sedang berlangsung
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 2: Kategori -->
+        <section class="presensi-card animate-fade-up animate-delay-2" aria-labelledby="label-kategori-presensi">
+          <div class="presensi-section-label" id="label-kategori-presensi">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+              <line x1="7" y1="7" x2="7.01" y2="7"/>
+            </svg>
+            Kategori
+          </div>
+
+          <div class="presensi-kategori-grid">
+            <!-- Jenis Peserta -->
+            <fieldset style="border:none;padding:0;min-width:0;">
+              <legend class="presensi-radio-group-title">Jenis Peserta <span aria-hidden="true">*</span></legend>
+              <div class="presensi-radio-options">
+                <label class="presensi-radio-option" id="label-jenis-internal">
+                  <input type="radio" name="jenis-peserta" value="internal" id="jenis-internal" required />
+                  <span class="presensi-radio-custom" aria-hidden="true"></span>
+                  <span class="presensi-radio-label">Pegawai Internal</span>
+                </label>
+                <label class="presensi-radio-option" id="label-jenis-eksternal">
+                  <input type="radio" name="jenis-peserta" value="eksternal" id="jenis-eksternal" />
+                  <span class="presensi-radio-custom" aria-hidden="true"></span>
+                  <span class="presensi-radio-label">Eksternal</span>
+                </label>
+              </div>
+            </fieldset>
+
+            <!-- Tipe Kehadiran -->
+            <fieldset style="border:none;padding:0;min-width:0;">
+              <legend class="presensi-radio-group-title">Tipe Kehadiran <span aria-hidden="true">*</span></legend>
+              <div class="presensi-radio-options">
+                <label class="presensi-radio-option" id="label-tipe-narasumber">
+                  <input type="radio" name="tipe-kehadiran" value="narasumber" id="tipe-narasumber" required />
+                  <span class="presensi-radio-custom" aria-hidden="true"></span>
+                  <span class="presensi-radio-label">Narasumber</span>
+                </label>
+                <label class="presensi-radio-option" id="label-tipe-peserta">
+                  <input type="radio" name="tipe-kehadiran" value="peserta" id="tipe-peserta" />
+                  <span class="presensi-radio-custom" aria-hidden="true"></span>
+                  <span class="presensi-radio-label">Peserta</span>
+                </label>
+              </div>
+            </fieldset>
+          </div>
+        </section>
+
+        <!-- SECTION 3: Data Peserta -->
+        <section class="presensi-card animate-fade-up animate-delay-3" aria-labelledby="label-data-peserta-presensi">
+          <div class="presensi-section-label" id="label-data-peserta-presensi">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            Data Peserta
+          </div>
+
+          <!-- Nama Peserta -->
+          <div class="presensi-form-grid presensi-form-grid-1 mb-4">
+            <div class="presensi-form-group">
+              <label class="presensi-form-label" for="nama-peserta">Nama Peserta <span aria-hidden="true">*</span></label>
+              <input type="text" id="nama-peserta" name="nama-peserta" class="presensi-form-input"
+                placeholder="Ketik minimal 3 karakter..." minlength="3" required autocomplete="name" />
+            </div>
+          </div>
+
+          <!-- Jabatan + Instansi -->
+          <div class="presensi-form-grid presensi-form-grid-2 mb-4">
+            <div class="presensi-form-group">
+              <label class="presensi-form-label" for="jabatan-presensi">Jabatan <span aria-hidden="true">*</span></label>
+              <input type="text" id="jabatan-presensi" name="jabatan" class="presensi-form-input"
+                placeholder="Direktur, Staf, dll..." required autocomplete="organization-title" />
+            </div>
+            <div class="presensi-form-group">
+              <label class="presensi-form-label" for="instansi-presensi">Instansi <span aria-hidden="true">*</span></label>
+              <input type="text" id="instansi-presensi" name="instansi" class="presensi-form-input"
+                placeholder="Ketik minimal 3 karakter..." minlength="3" required autocomplete="organization" />
+            </div>
+          </div>
+
+          <!-- Unit Kerja -->
+          <div class="presensi-form-grid presensi-form-grid-1 mb-4">
+            <div class="presensi-form-group">
+              <label class="presensi-form-label" for="unit-kerja">Unit Kerja <span aria-hidden="true">*</span></label>
+              <input type="text" id="unit-kerja" name="unit-kerja" class="presensi-form-input"
+                placeholder="Biro, Pusat, Kantor Wilayah..." required />
+            </div>
+          </div>
+
+          <!-- NIP + WA + Email -->
+          <div class="presensi-form-grid presensi-form-grid-3">
+            <div class="presensi-form-group">
+              <label class="presensi-form-label" for="nip-presensi">NIP / NRP / NIK</label>
+              <input type="text" id="nip-presensi" name="nip-nrp-nik" class="presensi-form-input"
+                placeholder="" inputmode="numeric" />
+            </div>
+            <div class="presensi-form-group">
+              <label class="presensi-form-label" for="whatsapp-presensi">No. WhatsApp</label>
+              <input type="tel" id="whatsapp-presensi" name="whatsapp" class="presensi-form-input"
+                placeholder="" autocomplete="tel" inputmode="tel" />
+            </div>
+            <div class="presensi-form-group">
+              <label class="presensi-form-label" for="email-presensi">E-mail</label>
+              <input type="email" id="email-presensi" name="email" class="presensi-form-input"
+                placeholder="contoh@email.com" autocomplete="email" inputmode="email" />
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 4: Verifikasi -->
+        <section class="presensi-card animate-fade-up animate-delay-4" aria-labelledby="label-verifikasi-presensi">
+          <div class="presensi-section-label" id="label-verifikasi-presensi">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            Verifikasi
+          </div>
+
+          <!-- Signature Pad -->
+          <div class="presensi-form-group" style="margin-bottom:12px;">
+            <label class="presensi-form-label" for="signature-canvas">Tanda Tangan <span aria-hidden="true">*</span></label>
+            <div class="signature-pad-wrap">
+              <canvas id="signature-canvas" class="signature-canvas" width="700" height="200"
+                aria-label="Kanvas tanda tangan" tabindex="0"></canvas>
+              <div class="signature-placeholder" id="signature-placeholder" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 20h9"/>
+                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                </svg>
+                <span>Tanda tangan di sini</span>
+              </div>
+            </div>
+            <button type="button" class="presensi-clear-btn" id="btn-clear-signature" aria-label="Hapus tanda tangan">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+              </svg>
+              Hapus Tanda Tangan
+            </button>
+          </div>
+
+          <!-- Checkbox Pernyataan -->
+          <label class="presensi-checkbox-label" for="checkbox-pernyataan">
+            <input type="checkbox" id="checkbox-pernyataan" name="pernyataan" required />
+            <span class="presensi-checkbox-custom" aria-hidden="true"></span>
+            <span class="presensi-checkbox-text">Saya menyatakan ini adalah tanda tangan saya yang sebenarnya</span>
+          </label>
+
+          <!-- Turnstile Mock -->
+          <div style="margin-top: 20px;">
+            <div class="presensi-turnstile-mock" id="presensi-turnstile-mock"
+              role="button" tabindex="0" aria-label="Verifikasi: Saya bukan robot" aria-live="polite">
+              <div class="presensi-turnstile-checkbox" id="presensi-turnstile-checkbox" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </div>
+              <span class="presensi-turnstile-text" id="presensi-turnstile-text">Saya bukan robot</span>
+              <div class="presensi-turnstile-brand" aria-hidden="true">
+                <svg class="presensi-turnstile-brand-logo" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M21.1 13.2c.1-.4.1-.8 0-1.2-.8-3.4-4.1-5.9-7.9-5.9-3.2 0-6 1.8-7.4 4.5-.3 0-.5-.1-.8-.1-2.2 0-4 1.7-4 3.8s1.8 3.8 4 3.8h15.4c1.8 0 3.2-1.4 3.2-3.1-.1-1.5-1.2-2.7-2.5-2.9V13.2z" fill="#F6821F"/>
+                  <path d="M22.6 13.8h-.3c-.1 0-.2-.1-.2-.2l-.2-.8c-.2-.8-.9-1.4-1.8-1.4-.3 0-.6.1-.9.2-.4-2.2-2.4-3.9-4.8-3.9-2.7 0-4.8 2.1-4.8 4.7v.2c-.2-.1-.4-.1-.7-.1-1.4 0-2.5 1.1-2.5 2.4s1.1 2.4 2.5 2.4h13.7c1.1 0 2-.8 2-1.8s-.9-1.7-2-1.7z" fill="#FBAD41"/>
+                </svg>
+                <div class="presensi-turnstile-brand-text">Cloudflare<br/>Turnstile</div>
+                <div class="presensi-turnstile-brand-links">Privasi &middot; Bantuan</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Submit -->
+        <div class="presensi-submit-wrap animate-fade-up animate-delay-5">
+          <button type="submit" class="presensi-btn-submit" id="btn-submit-presensi"
+            disabled aria-disabled="true" aria-label="Kirim data kehadiran Anda">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="22" y1="2" x2="11" y2="13"/>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+            Kirim Kehadiran
+          </button>
+          <p class="presensi-submit-hint" id="presensi-submit-hint" role="status" aria-live="polite">
+            Lengkapi semua kolom wajib, tanda tangan, dan verifikasi untuk mengirim.
+          </p>
+        </div>
+
+      </form>
+    </div><!-- /presensi-form-card -->
+
   </main>
 
   <script src="js/presensi.js" defer></script>

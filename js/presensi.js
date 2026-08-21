@@ -45,9 +45,19 @@
   if (canvas && ctx) {
     // Set warna garis
     ctx.strokeStyle = '#FFFFFF';
-    ctx.lineWidth   = 2.2;
+    ctx.lineWidth   = 2.8;
     ctx.lineCap     = 'round';
     ctx.lineJoin    = 'round';
+
+    // Fill background gelap
+    function fillDarkBg() {
+      ctx.save();
+      ctx.resetTransform ? ctx.resetTransform() : ctx.setTransform(1,0,0,1,0,0);
+      // bg ttd
+      ctx.fillStyle = 'rgba(250, 192, 0, 0.29)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.restore();
+    }
 
     /* Ukuran canvas sesuai tampilan agar tidak blur */
     function resizeCanvas() {
@@ -61,9 +71,12 @@
       canvas.height = rect.height * dpr;
       ctx.scale(dpr, dpr);
 
+      // Fill background gelap
+      fillDarkBg();
+
       // Kembalikan style
       ctx.strokeStyle = '#FFFFFF';
-      ctx.lineWidth   = 2.2;
+      ctx.lineWidth   = 2.8;
       ctx.lineCap     = 'round';
       ctx.lineJoin    = 'round';
 
@@ -134,6 +147,7 @@
     if (clearBtn) {
       clearBtn.addEventListener('click', function () {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        fillDarkBg();
         hasSignature = false;
         placeholder && placeholder.classList.remove('hidden');
         checkFormReady();
