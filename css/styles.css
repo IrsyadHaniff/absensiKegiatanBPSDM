@@ -29,8 +29,7 @@
   --color-border-dark: rgba(255, 255, 255, 0.12);
 
   /* Typography */
-  --font-serif:  'Playfair Display', Georgia, 'Times New Roman', serif;
-  --font-sans:   'Inter', system-ui, -apple-system, sans-serif;
+  --font-primary: 'Poppins', system-ui, -apple-system, sans-serif;
 
   /* Spacing */
   --space-1:  4px;
@@ -76,7 +75,7 @@ html {
 }
 
 body {
-  font-family: var(--font-sans);
+  font-family: var(--font-primary);
   font-size: 15px;
   line-height: 1.6;
   color: var(--color-black);
@@ -100,14 +99,14 @@ ul, ol {
 }
 
 button {
-  font-family: var(--font-sans);
+  font-family: var(--font-primary);
   cursor: pointer;
   border: none;
   background: none;
 }
 
 input, select, textarea {
-  font-family: var(--font-sans);
+  font-family: var(--font-primary);
 }
 
 /* --- Focus Visible (Accessibility) --- */
@@ -303,7 +302,7 @@ input, select, textarea {
   color: var(--color-gray-40);
 }
 
-.section-label--gold {
+.section-label-gold {
   color: var(--color-gold);
 }
 
@@ -314,7 +313,7 @@ input, select, textarea {
   margin: var(--space-6) 0;
 }
 
-.divider--dark {
+.divider-dark {
   border-color: var(--color-border-dark);
 }
 
@@ -333,7 +332,8 @@ input, select, textarea {
   padding: var(--space-4) 0;
 }
 
-.site-header__inner {
+/* Pembungkus konten header agar terpusat */
+.site-header-inner {
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 var(--space-6);
@@ -342,7 +342,8 @@ input, select, textarea {
   gap: var(--space-4);
 }
 
-.site-header__brand {
+/* Area brand/logo di header */
+.site-header-brand {
   display: flex;
   align-items: center;
   gap: var(--space-3);
@@ -350,12 +351,14 @@ input, select, textarea {
   min-width: 0;
 }
 
-.site-header__titles {
+/* Wrapper teks judul header */
+.site-header-titles {
   min-width: 0;
 }
 
-.site-header__title {
-  font-family: var(--font-serif);
+/* Judul utama header */
+.site-header-title {
+  font-family: var(--font-primary);
   font-size: 16px;
   font-weight: 700;
   color: var(--color-black);
@@ -365,7 +368,8 @@ input, select, textarea {
   text-overflow: ellipsis;
 }
 
-.site-header__subtitle {
+/* Subjudul header */
+.site-header-subtitle {
   font-size: 12px;
   color: var(--color-gray-40);
   line-height: 1.3;
@@ -374,7 +378,8 @@ input, select, textarea {
   text-overflow: ellipsis;
 }
 
-.site-header__nav {
+/* Navigasi di header */
+.site-header-nav {
   display: flex;
   align-items: center;
   gap: var(--space-3);
@@ -389,14 +394,16 @@ input, select, textarea {
   margin: 0 auto;
 }
 
-.page-hero__badge {
+/* Area badge di atas hero */
+.page-hero-badge {
   display: flex;
   justify-content: center;
   margin-bottom: var(--space-4);
 }
 
-.page-hero__title {
-  font-family: var(--font-serif);
+/* Judul utama halaman hero */
+.page-hero-title {
+  font-family: var(--font-primary);
   font-size: clamp(28px, 5vw, 42px);
   font-weight: 700;
   color: var(--color-black);
@@ -404,7 +411,8 @@ input, select, textarea {
   margin-bottom: var(--space-4);
 }
 
-.page-hero__desc {
+/* Deskripsi hero */
+.page-hero-desc {
   font-size: 16px;
   color: var(--color-gray-40);
   line-height: 1.7;
@@ -427,7 +435,8 @@ input, select, textarea {
   margin-bottom: var(--space-4);
 }
 
-.section-header__line {
+/* Garis dekoratif di samping judul seksi */
+.section-header-line {
   flex: 1;
   height: 1px;
   background: var(--color-border);
@@ -478,16 +487,18 @@ input, select, textarea {
   opacity: 1;
 }
 
-.activity-card--featured {
+/* Kartu unggulan / hari ini */
+.activity-card-featured {
   border-color: rgba(240, 195, 50, 0.5);
   background: linear-gradient(to right, var(--color-gold-soft) 0%, var(--color-white) 40%);
 }
 
-.activity-card--featured::before {
+.activity-card-featured::before {
   opacity: 1;
 }
 
-.activity-card__icon {
+/* Ikon di kartu kegiatan */
+.activity-card-icon {
   width: 48px;
   height: 48px;
   border-radius: var(--radius-md);
@@ -499,34 +510,38 @@ input, select, textarea {
   border: 1px solid rgba(240, 195, 50, 0.3);
 }
 
-.activity-card__icon svg {
+.activity-card-icon svg {
   width: 24px;
   height: 24px;
   color: var(--color-gold-dark);
 }
 
-.activity-card__body {
+/* Konten utama di dalam kartu */
+.activity-card-body {
   flex: 1;
   min-width: 0;
 }
 
-.activity-card__name {
-  font-family: var(--font-serif);
+/* Nama/judul kegiatan */
+.activity-card-name {
+  font-family: var(--font-primary);
   font-size: 17px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--color-black);
   line-height: 1.35;
   margin-bottom: var(--space-3);
 }
 
-.activity-card__meta {
+/* Baris meta info (tanggal, waktu, lokasi) */
+.activity-card-meta {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2) var(--space-5);
   margin-bottom: var(--space-5);
 }
 
-.activity-card__meta-item {
+/* Satu item meta (ikon + teks) */
+.activity-card-meta-item {
   display: flex;
   align-items: center;
   gap: var(--space-2);
@@ -535,21 +550,23 @@ input, select, textarea {
   line-height: 1;
 }
 
-.activity-card__meta-item svg {
+.activity-card-meta-item svg {
   width: 15px;
   height: 15px;
   color: var(--color-gray-40);
   flex-shrink: 0;
 }
 
-.activity-card__actions {
+/* Area tombol aksi di kartu */
+.activity-card-actions {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-3);
   align-items: center;
 }
 
-.activity-card__actions-right {
+/* Kelompok tombol kanan kartu */
+.activity-card-actions-right {
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -623,7 +640,8 @@ input, select, textarea {
   -webkit-backdrop-filter: blur(12px);
 }
 
-.konfirmasi-header__inner {
+/* Pembungkus konten header konfirmasi */
+.konfirmasi-header-inner {
   max-width: 860px;
   margin: 0 auto;
   display: flex;
@@ -631,7 +649,8 @@ input, select, textarea {
   gap: var(--space-4);
 }
 
-.konfirmasi-header__brand {
+/* Area brand header konfirmasi */
+.konfirmasi-header-brand {
   display: flex;
   align-items: center;
   gap: var(--space-3);
@@ -639,20 +658,23 @@ input, select, textarea {
   min-width: 0;
 }
 
-.konfirmasi-header__title {
-  font-family: var(--font-serif);
+/* Judul header konfirmasi */
+.konfirmasi-header-title {
+  font-family: var(--font-primary);
   font-size: 15px;
   font-weight: 700;
   color: var(--color-white);
   line-height: 1.3;
 }
 
-.konfirmasi-header__subtitle {
+/* Subjudul header konfirmasi */
+.konfirmasi-header-subtitle {
   font-size: 11px;
   color: var(--color-gray-40);
 }
 
-.konfirmasi-header__back {
+/* Tombol kembali di header konfirmasi */
+.konfirmasi-header-back {
   display: flex;
   align-items: center;
   gap: var(--space-2);
@@ -662,11 +684,11 @@ input, select, textarea {
   transition: color var(--transition-fast);
 }
 
-.konfirmasi-header__back:hover {
+.konfirmasi-header-back:hover {
   color: var(--color-gold);
 }
 
-.konfirmasi-header__back svg {
+.konfirmasi-header-back svg {
   width: 18px;
   height: 18px;
 }
@@ -700,7 +722,8 @@ input, select, textarea {
   border-bottom: none;
 }
 
-.form-section__label {
+/* Label judul seksi di dalam form */
+.form-section-label {
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.16em;
@@ -712,7 +735,7 @@ input, select, textarea {
   gap: var(--space-2);
 }
 
-.form-section__label::after {
+.form-section-label::after {
   content: '';
   flex: 1;
   height: 1px;
@@ -731,21 +754,24 @@ input, select, textarea {
   margin: 0 auto var(--space-4);
 }
 
-.form-header-section__title {
-  font-family: var(--font-serif);
+/* Judul di dalam header seksi form */
+.form-header-title {
+  font-family: var(--font-primary);
   font-size: 20px;
   font-weight: 700;
   color: var(--color-white);
   margin-bottom: var(--space-1);
 }
 
-.form-header-section__subtitle {
+/* Subjudul header seksi form */
+.form-header-subtitle {
   font-size: 13px;
   color: var(--color-gray-40);
   margin-bottom: var(--space-2);
 }
 
-.form-header-section__tag {
+/* Tag/chip di header form */
+.form-header-tag {
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
@@ -766,21 +792,24 @@ input, select, textarea {
   gap: var(--space-2);
 }
 
-.kegiatan-info__name {
-  font-family: var(--font-serif);
+/* Nama/judul kegiatan di form konfirmasi */
+.kegiatan-info-name {
+  font-family: var(--font-primary);
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--color-white);
   line-height: 1.35;
 }
 
-.kegiatan-info__meta {
+/* Baris meta info kegiatan */
+.kegiatan-info-meta {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2) var(--space-5);
 }
 
-.kegiatan-info__meta-item {
+/* Satu item meta info kegiatan */
+.kegiatan-info-meta-item {
   display: flex;
   align-items: center;
   gap: var(--space-2);
@@ -788,7 +817,7 @@ input, select, textarea {
   color: var(--color-gray-20);
 }
 
-.kegiatan-info__meta-item svg {
+.kegiatan-info-meta-item svg {
   width: 14px;
   height: 14px;
   color: var(--color-gold);
@@ -802,14 +831,15 @@ input, select, textarea {
   gap: var(--space-5);
 }
 
-.radio-group__title {
+/* Judul grup radio */
+.radio-group-title {
   font-size: 13px;
   font-weight: 600;
   color: var(--color-gray-20);
   margin-bottom: var(--space-3);
 }
 
-.radio-group__title span {
+.radio-group-title span {
   color: var(--color-gold);
 }
 
@@ -904,9 +934,9 @@ input, select, textarea {
   gap: var(--space-4);
 }
 
-.form-grid--2 { grid-template-columns: 1fr 1fr; }
-.form-grid--3 { grid-template-columns: 1fr 1fr 1fr; }
-.form-grid--1 { grid-template-columns: 1fr; }
+.form-grid-2 { grid-template-columns: 1fr 1fr; }
+.form-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+.form-grid-1 { grid-template-columns: 1fr; }
 
 .form-group {
   display: flex;
@@ -914,7 +944,8 @@ input, select, textarea {
   gap: var(--space-2);
 }
 
-.form-group--full {
+/* Field yang melebar penuh di grid */
+.form-group-full {
   grid-column: 1 / -1;
 }
 
@@ -930,12 +961,14 @@ input, select, textarea {
   margin-left: 2px;
 }
 
+/* Input field form */
 .form-input {
   width: 100%;
   padding: var(--space-3) var(--space-4);
   background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.12);
   border-radius: var(--radius-md);
+  font-family: var(--font-primary);
   font-size: 14px;
   color: var(--color-white);
   transition: border-color var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast);
@@ -992,7 +1025,8 @@ input, select, textarea {
   background: rgba(255,255,255,0.07);
 }
 
-.turnstile-mock__checkbox {
+/* Kotak centang di widget Turnstile */
+.turnstile-mock-checkbox {
   width: 28px;
   height: 28px;
   border: 2px solid rgba(255,255,255,0.25);
@@ -1005,7 +1039,7 @@ input, select, textarea {
   position: relative;
 }
 
-.turnstile-mock__checkbox svg {
+.turnstile-mock-checkbox svg {
   width: 18px;
   height: 18px;
   opacity: 0;
@@ -1014,7 +1048,8 @@ input, select, textarea {
   color: var(--color-white);
 }
 
-.turnstile-mock__text {
+/* Teks status Turnstile */
+.turnstile-mock-text {
   flex: 1;
   font-size: 14px;
   color: rgba(255,255,255,0.6);
@@ -1022,7 +1057,8 @@ input, select, textarea {
   transition: color var(--transition-fast);
 }
 
-.turnstile-mock__brand {
+/* Area brand Cloudflare di widget */
+.turnstile-mock-brand {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1030,19 +1066,22 @@ input, select, textarea {
   flex-shrink: 0;
 }
 
-.turnstile-mock__brand-logo {
+/* Logo brand Cloudflare */
+.turnstile-mock-brand-logo {
   width: 28px;
   height: 28px;
 }
 
-.turnstile-mock__brand-text {
+/* Nama brand Cloudflare */
+.turnstile-mock-brand-text {
   font-size: 9px;
   color: rgba(255,255,255,0.3);
   text-align: center;
   line-height: 1.2;
 }
 
-.turnstile-mock__brand-links {
+/* Tautan privasi/bantuan Cloudflare */
+.turnstile-mock-brand-links {
   font-size: 9px;
   color: rgba(255,255,255,0.25);
   text-align: center;
@@ -1055,23 +1094,23 @@ input, select, textarea {
   box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.12);
 }
 
-.turnstile-mock.is-verified .turnstile-mock__checkbox {
+.turnstile-mock.is-verified .turnstile-mock-checkbox {
   background: #27AE60;
   border-color: #27AE60;
 }
 
-.turnstile-mock.is-verified .turnstile-mock__checkbox svg {
+.turnstile-mock.is-verified .turnstile-mock-checkbox svg {
   opacity: 1;
   transform: scale(1);
 }
 
-.turnstile-mock.is-verified .turnstile-mock__text {
+.turnstile-mock.is-verified .turnstile-mock-text {
   color: #5FD68A;
   font-weight: 600;
 }
 
-/* Loading spinner inside checkbox */
-.turnstile-mock.is-loading .turnstile-mock__checkbox::before {
+/* Spinner loading di dalam kotak centang */
+.turnstile-mock.is-loading .turnstile-mock-checkbox::before {
   content: '';
   position: absolute;
   width: 16px;
@@ -1139,13 +1178,13 @@ input, select, textarea {
    RESPONSIVE — MOBILE FIRST BREAKPOINTS
    ============================================================ */
 
-/* Tablet and below */
+/* Tablet dan di bawahnya */
 @media (max-width: 768px) {
-  .site-header__title {
+  .site-header-title {
     font-size: 14px;
   }
 
-  .site-header__subtitle {
+  .site-header-subtitle {
     display: none;
   }
 
@@ -1162,14 +1201,14 @@ input, select, textarea {
     gap: var(--space-4);
   }
 
-  .activity-card__actions-right {
+  .activity-card-actions-right {
     flex-direction: row;
     flex-wrap: wrap;
     align-items: flex-start;
     width: 100%;
   }
 
-  .activity-card__actions-right .btn {
+  .activity-card-actions-right .btn {
     flex: 1;
     min-width: 140px;
   }
@@ -1195,32 +1234,32 @@ input, select, textarea {
 
 /* Mobile */
 @media (max-width: 640px) {
-  .form-grid--2,
-  .form-grid--3 {
+  .form-grid-2,
+  .form-grid-3 {
     grid-template-columns: 1fr;
   }
 
-  .form-group--full {
+  .form-group-full {
     grid-column: auto;
   }
 
-  .site-header__inner {
+  .site-header-inner {
     padding: 0 var(--space-4);
   }
 
-  .page-hero__title {
+  .page-hero-title {
     font-size: 26px;
   }
 
-  .konfirmasi-header__inner {
+  .konfirmasi-header-inner {
     padding: 0 var(--space-4);
   }
 
-  .kegiatan-info__name {
+  .kegiatan-info-name {
     font-size: 17px;
   }
 
-  .activity-card__meta {
+  .activity-card-meta {
     flex-direction: column;
     gap: var(--space-2);
   }
@@ -1230,14 +1269,14 @@ input, select, textarea {
   }
 }
 
-/* Large screens */
+/* Layar besar */
 @media (min-width: 1024px) {
-  .activity-card__body {
+  .activity-card-body {
     display: flex;
     flex-direction: column;
   }
 
-  .activity-card__meta {
+  .activity-card-meta {
     flex-wrap: nowrap;
   }
 }
