@@ -504,6 +504,76 @@ function initAnimationObserver(elements) {
 }
 
 /* ============================================================
+   AUTO REFRESH — silent background fetch
+   ============================================================ */
+const REFRESH_INTERVAL = 1 * 60 * 1000; // 1 menit (sama dengan ticker Apps Script)
+
+let _autoRefreshTimer = null;
+
+function startAutoRefresh() {
+  if (_autoRefreshTimer) clearInterval(_autoRefreshTimer);
+  _autoRefreshTimer = setInterval(() => {
+    fetchKegiatanSilent();
+  }, REFRESH_INTERVAL);
+}
+
+/**
+ * Fetch ulang data tanpa menampilkan loading spinner.
+ * Hanya re-render jika data berhasil didapat.
+ */
+async function fetchKegiatanSilent() {
+  try {
+    const url = `${SPREADSHEET_URL}?t=${Date.now()}`;
+    const res = await fetchWithTimeout(url, FETCH_TIMEOUT);
+    if (!res.ok) return; // gagal diam-diam, tidak ganggu UI
+
+    const data     = await res.json();
+    const kegiatan = (data.kegiatan || [])
+      .filter(k => k.nama && k.nama.trim() !== '')
+      .map(k => ({ ...k, status: deriveStatus(k.tanggal, k.jam, k.jamSelesai) }));
+
+    const { todayActive, upcoming, others } = kategorikan(kegiatan);
+
+    // Re-render semua section tanpa sentuh loading/error state
+    const elTodayList    = document.getElementById('today-list');
+    const elTodayEmpty   = document.getElementById('today-empty');
+    const secUpcoming    = document.getElementById('upcoming-section');
+    const elUpcomingList = document.getElementById('upcoming-list');
+    const secOther       = document.getElementById('other-section');
+    const elOtherList    = document.getElementById('other-list');
+
+    // Section 1 — Hari Ini
+    if (todayActive.length === 0) {
+      if (elTodayList)  elTodayList.style.display  = 'none';
+      if (elTodayEmpty) elTodayEmpty.style.display = '';
+    } else {
+      if (elTodayEmpty) elTodayEmpty.style.display = 'none';
+      if (elTodayList)  elTodayList.style.display  = '';
+      renderKegiatanList(elTodayList, todayActive, 'today');
+    }
+
+    // Section 2 — Akan Datang
+    if (upcoming.length > 0) {
+      if (secUpcoming)    secUpcoming.style.display    = '';
+      if (elUpcomingList) renderKegiatanList(elUpcomingList, upcoming, 'upcoming');
+    } else {
+      if (secUpcoming) secUpcoming.style.display = 'none';
+    }
+
+    // Section 3 — Lainnya
+    if (others.length > 0) {
+      if (secOther)    secOther.style.display    = '';
+      if (elOtherList) renderKegiatanList(elOtherList, others, 'other');
+    } else {
+      if (secOther) secOther.style.display = 'none';
+    }
+
+  } catch {
+    // Gagal diam-diam — tidak tampilkan error, biarkan data lama tetap tampil
+  }
+}
+
+/* ============================================================
    REALTIME CLOCK
    ============================================================ */
 function initClock() {
@@ -563,6 +633,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initLoginButton();
   document.querySelectorAll('.badge-dot').forEach(d => d.setAttribute('aria-hidden', 'true'));
   fetchKegiatan();
+  startAutoRefresh(); // background refresh setiap 5 menit
 });
 
 window.fetchKegiatan = fetchKegiatan;
