@@ -1,3 +1,4 @@
+﻿<!-- file website absensikegiatan -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -92,14 +93,21 @@
 
       <!-- Navigation -->
       <nav class="site-header-nav" aria-label="Navigasi utama">
-        <a href="#" class="btn btn-dark" id="btn-login" aria-label="Masuk ke akun Anda">
+        <!-- Date & Time -->
+        <div class="header-datetime" role="timer" aria-live="polite" aria-label="Waktu saat ini">
+          <span id="header-date" class="header-date"></span>
+          <span id="header-time" class="header-time">00:00:00</span>
+        </div>
+
+        <!-- button login -->
+        <!-- <a href="#" class="btn btn-dark" id="btn-login" aria-label="Masuk ke akun Anda">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
             <polyline points="10 17 15 12 10 7"/>
             <line x1="15" y1="12" x2="3" y2="12"/>
           </svg>
           Login
-        </a>
+        </a> -->
       </nav>
 
     </div>
@@ -127,10 +135,22 @@
     <!-- Content Wrapper -->
     <div class="content-wrap">
 
+      <!-- Loading global -->
+      <div id="today-loading" class="activity-loading" aria-live="polite">
+        <div class="activity-loading-spinner" aria-hidden="true"></div>
+        <span>Memuat kegiatan...</span>
+      </div>
+
+      <!-- Error state -->
+      <div id="fetch-error" class="activity-error" style="display:none" role="alert">
+        <p>Gagal memuat data kegiatan. Silakan coba lagi.</p>
+        <button class="btn btn-outline-dark btn-sm" onclick="fetchKegiatan()">Coba Lagi</button>
+      </div>
+
       <!-- ============================================================
-           KEGIATAN HARI INI
+           1. KEGIATAN HARI INI
            ============================================================ -->
-      <section aria-labelledby="today-section-label">
+      <section aria-labelledby="today-section-label" id="today-section" style="display:none">
         <div class="section-header animate-fade-up animate-delay-1">
           <span class="badge badge-gold" id="today-section-label">
             <span class="badge-dot" aria-hidden="true"></span>
@@ -139,349 +159,54 @@
           <div class="section-header-line" aria-hidden="true"></div>
         </div>
 
-        <ul class="activity-list" role="list">
+        <!-- Empty: tidak ada kegiatan hari ini -->
+        <div id="today-empty" class="activity-empty-inline" style="display:none" aria-live="polite">
+          <div class="activity-empty-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+          </div>
+          <p>Tidak ada kegiatan yang sedang berlangsung hari ini.</p>
+        </div>
 
-          <!-- Card 1 (Featured / Hari Ini) -->
-          <li class="activity-card activity-card-featured animate-fade-up animate-delay-2" role="article">
-            <div class="activity-card-icon" aria-hidden="true">
-              <!-- Ikon rapat/diskusi -->
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                <circle cx="9" cy="7" r="4"/>
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-              </svg>
-            </div>
-
-            <div class="activity-card-body">
-              <h2 class="activity-card-name">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corrupti?
-              </h2>
-
-              <div class="activity-card-meta" role="list">
-                <div class="activity-card-meta-item" role="listitem">
-                  <!-- Ikon kalender -->
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                    <line x1="16" y1="2" x2="16" y2="6"/>
-                    <line x1="8" y1="2" x2="8" y2="6"/>
-                    <line x1="3" y1="10" x2="21" y2="10"/>
-                  </svg>
-                  <span>Rabu, 20 Agustus 2026</span>
-                </div>
-                <div class="activity-card-meta-item" role="listitem">
-                  <!-- Ikon jam -->
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <circle cx="12" cy="12" r="10"/>
-                    <polyline points="12 6 12 12 16 14"/>
-                  </svg>
-                  <span>09.00 - 12.00 WIB</span>
-                </div>
-                <div class="activity-card-meta-item" role="listitem">
-                  <!-- Ikon lokasi -->
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                    <circle cx="12" cy="10" r="3"/>
-                  </svg>
-                  <span>Ruang Rapat Utama Lt. 5, Gedung A</span>
-                </div>
-              </div>
-
-              <div class="activity-card-actions">
-                <a href="presensi.html?kegiatan=Rapat+Koordinasi+Perencanaan+Strategis+Pusbangkom+Tahun+2026&lokasi=Ruang+Rapat+Utama+Lt.+5,+Gedung+A"
-                   class="btn btn-gold btn-sm"
-                   id="btn-presensi-1"
-                   aria-label="Isi presensi untuk Rapat Koordinasi Perencanaan Strategis">
-                  <!-- Ikon grid/form -->
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-                    <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
-                  </svg>
-                  Isi Presensi
-                </a>
-                <a href="konfirmasi.html?kegiatan=Rapat+Koordinasi+Perencanaan+Strategis+Biro+Pusbangkom+Semester+II+Tahun+2026&lokasi=Ruang+Rapat+Utama+Lt.+5,+Gedung+A"
-                   class="btn btn-outline-dark btn-sm"
-                   id="btn-konfirmasi-1"
-                   aria-label="Konfirmasi kehadiran untuk Rapat Koordinasi Perencanaan Strategis">
-                  <!-- Ikon centang -->
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <polyline points="20 6 9 17 4 12"/>
-                  </svg>
-                  Konfirmasi Hadir
-                </a>
-              </div>
-            </div>
-          </li>
-
-          <!-- Card 2 (Hari Ini) -->
-          <li class="activity-card activity-card-featured animate-fade-up animate-delay-3" role="article">
-            <div class="activity-card-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-              </svg>
-            </div>
-
-            <div class="activity-card-body">
-              <h2 class="activity-card-name">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quo!
-              </h2>
-
-              <div class="activity-card-meta" role="list">
-                <div class="activity-card-meta-item" role="listitem">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                    <line x1="16" y1="2" x2="16" y2="6"/>
-                    <line x1="8" y1="2" x2="8" y2="6"/>
-                    <line x1="3" y1="10" x2="21" y2="10"/>
-                  </svg>
-                  <span>Rabu, 20 Agustus 2026</span>
-                </div>
-                <div class="activity-card-meta-item" role="listitem">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <circle cx="12" cy="12" r="10"/>
-                    <polyline points="12 6 12 12 16 14"/>
-                  </svg>
-                  <span>13.30 - 17.00 WIB</span>
-                </div>
-                <div class="activity-card-meta-item" role="listitem">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                    <circle cx="12" cy="10" r="3"/>
-                  </svg>
-                  <span>Aula Serbaguna Lt. 2, Gedung B</span>
-                </div>
-              </div>
-
-              <div class="activity-card-actions">
-                <a href="presensi.html?kegiatan=Workshop+Penyusunan+Laporan+Kinerja+dan+Evaluasi+Program+Kerja+Tahun+2026&lokasi=Aula+Serbaguna+Lt.+2,+Gedung+B"
-                   class="btn btn-gold btn-sm"
-                   id="btn-presensi-2"
-                   aria-label="Isi presensi untuk Workshop Penyusunan Laporan Kinerja">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-                    <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
-                  </svg>
-                  Isi Presensi
-                </a>
-                <a href="konfirmasi.html?kegiatan=Workshop+Penyusunan+Laporan+Kinerja+dan+Evaluasi+Program+Kerja+Tahun+2026&lokasi=Aula+Serbaguna+Lt.+2,+Gedung+B"
-                   class="btn btn-outline-dark btn-sm"
-                   id="btn-konfirmasi-2"
-                   aria-label="Konfirmasi kehadiran untuk Workshop Penyusunan Laporan Kinerja">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <polyline points="20 6 9 17 4 12"/>
-                  </svg>
-                  Konfirmasi Hadir
-                </a>
-              </div>
-            </div>
-          </li>
-
-        </ul>
+        <ul class="activity-list" id="today-list" role="list" aria-label="Daftar kegiatan hari ini" style="display:none"></ul>
       </section>
 
       <!-- ============================================================
-           KEGIATAN LAINNYA
+           2. KEGIATAN AKAN DATANG
            ============================================================ -->
-      <section aria-labelledby="other-section-label">
-        <div class="other-section-header animate-fade-up animate-delay-4">
-          <span class="section-label" id="other-section-label">Kegiatan Lainnya</span>
+      <section aria-labelledby="upcoming-section-label" id="upcoming-section" style="display:none">
+        <div class="other-section-header animate-fade-up">
+          <span class="section-label" id="upcoming-section-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15" aria-hidden="true" style="vertical-align:-2px;margin-right:4px">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            Kegiatan Akan Datang
+          </span>
         </div>
+        <ul class="activity-list" id="upcoming-list" role="list" aria-label="Daftar kegiatan akan datang"></ul>
+      </section>
 
-        <ul class="activity-list" role="list">
-
-          <!-- Card 3 -->
-          <li class="activity-card animate-fade-up animate-delay-4" role="article">
-            <div class="activity-card-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-              </svg>
-            </div>
-
-            <div class="activity-card-body">
-              <h2 class="activity-card-name">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati?
-              </h2>
-
-              <div class="activity-card-meta" role="list">
-                <div class="activity-card-meta-item" role="listitem">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                    <line x1="16" y1="2" x2="16" y2="6"/>
-                    <line x1="8" y1="2" x2="8" y2="6"/>
-                    <line x1="3" y1="10" x2="21" y2="10"/>
-                  </svg>
-                  <span>Kamis, 21 Agustus 2026</span>
-                </div>
-                <div class="activity-card-meta-item" role="listitem">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <circle cx="12" cy="12" r="10"/>
-                    <polyline points="12 6 12 12 16 14"/>
-                  </svg>
-                  <span>09.00 - 15.00 WIB</span>
-                </div>
-                <div class="activity-card-meta-item" role="listitem">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                    <circle cx="12" cy="10" r="3"/>
-                  </svg>
-                  <span>Ruang Rapat Besar Lt. 3, Gedung C</span>
-                </div>
-              </div>
-
-              <div class="activity-card-actions">
-                <a href="presensi.html?kegiatan=Sosialisasi+Kebijakan+Pengelolaan+Arsip+dan+Dokumen+Negara&lokasi=Ruang+Rapat+Besar+Lt.+3,+Gedung+C"
-                   class="btn btn-gold btn-sm"
-                   id="btn-presensi-3"
-                   aria-label="Isi presensi untuk Sosialisasi Kebijakan Pengelolaan Arsip">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-                    <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
-                  </svg>
-                  Isi Presensi
-                </a>
-                <a href="konfirmasi.html?kegiatan=Sosialisasi+Kebijakan+Pengelolaan+Arsip+dan+Dokumen+Negara&lokasi=Ruang+Rapat+Besar+Lt.+3,+Gedung+C"
-                   class="btn btn-outline-dark btn-sm"
-                   id="btn-konfirmasi-3"
-                   aria-label="Konfirmasi kehadiran untuk Sosialisasi Kebijakan Pengelolaan Arsip">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <polyline points="20 6 9 17 4 12"/>
-                  </svg>
-                  Konfirmasi Hadir
-                </a>
-              </div>
-            </div>
-          </li>
-
-          <!-- Card 4 -->
-          <li class="activity-card animate-fade-up animate-delay-5" role="article">
-            <div class="activity-card-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="12" cy="12" r="10"/>
-                <line x1="12" y1="8" x2="12" y2="12"/>
-                <line x1="12" y1="16" x2="12.01" y2="16"/>
-              </svg>
-            </div>
-
-            <div class="activity-card-body">
-              <h2 class="activity-card-name">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ab.
-              </h2>
-
-              <div class="activity-card-meta" role="list">
-                <div class="activity-card-meta-item" role="listitem">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                    <line x1="16" y1="2" x2="16" y2="6"/>
-                    <line x1="8" y1="2" x2="8" y2="6"/>
-                    <line x1="3" y1="10" x2="21" y2="10"/>
-                  </svg>
-                  <span>Jumat, 22 Agustus 2026</span>
-                </div>
-                <div class="activity-card-meta-item" role="listitem">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <circle cx="12" cy="12" r="10"/>
-                    <polyline points="12 6 12 12 16 14"/>
-                  </svg>
-                  <span>10.00 - 12.30 WIB</span>
-                </div>
-                <div class="activity-card-meta-item" role="listitem">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                    <circle cx="12" cy="10" r="3"/>
-                  </svg>
-                  <span>Ruang Konferensi International, Hotel Aryaduta Jakarta</span>
-                </div>
-              </div>
-
-              <div class="activity-card-actions">
-                <a href="presensi.html?kegiatan=Diskusi+Panel+Inovasi+Layanan+Publik+dan+Transformasi+Digital&lokasi=Ruang+Konferensi+International,+Hotel+Aryaduta+Jakarta"
-                   class="btn btn-gold btn-sm"
-                   id="btn-presensi-4"
-                   aria-label="Isi presensi untuk Diskusi Panel Inovasi Layanan Publik">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-                    <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
-                  </svg>
-                  Isi Presensi
-                </a>
-                <a href="konfirmasi.html?kegiatan=Diskusi+Panel+Inovasi+Layanan+Publik+dan+Transformasi+Digital&lokasi=Ruang+Konferensi+International,+Hotel+Aryaduta+Jakarta"
-                   class="btn btn-outline-dark btn-sm"
-                   id="btn-konfirmasi-4"
-                   aria-label="Konfirmasi kehadiran untuk Diskusi Panel Inovasi Layanan Publik">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <polyline points="20 6 9 17 4 12"/>
-                  </svg>
-                  Konfirmasi Hadir
-                </a>
-              </div>
-            </div>
-          </li>
-
-          <!-- Card 5 -->
-          <li class="activity-card animate-fade-up animate-delay-6" role="article">
-            <div class="activity-card-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-              </svg>
-            </div>
-
-            <div class="activity-card-body">
-              <h2 class="activity-card-name">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Officia.
-              </h2>
-
-              <div class="activity-card-meta" role="list">
-                <div class="activity-card-meta-item" role="listitem">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                    <line x1="16" y1="2" x2="16" y2="6"/>
-                    <line x1="8" y1="2" x2="8" y2="6"/>
-                    <line x1="3" y1="10" x2="21" y2="10"/>
-                  </svg>
-                  <span>Senin, 25 Agustus 2026</span>
-                </div>
-                <div class="activity-card-meta-item" role="listitem">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <circle cx="12" cy="12" r="10"/>
-                    <polyline points="12 6 12 12 16 14"/>
-                  </svg>
-                  <span>08.30 - 11.30 WIB</span>
-                </div>
-                <div class="activity-card-meta-item" role="listitem">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                    <circle cx="12" cy="10" r="3"/>
-                  </svg>
-                  <span>Ruang Rapat Pimpinan Lt. 6, Gedung A</span>
-                </div>
-              </div>
-
-              <div class="activity-card-actions">
-                <a href="presensi.html?kegiatan=Rapat+Evaluasi+dan+Monitoring+Capaian+IKU+Triwulan+III&lokasi=Ruang+Rapat+Pimpinan+Lt.+6,+Gedung+A"
-                   class="btn btn-gold btn-sm"
-                   id="btn-presensi-5"
-                   aria-label="Isi presensi untuk Rapat Evaluasi IKU Triwulan III">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-                    <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
-                  </svg>
-                  Isi Presensi
-                </a>
-                <a href="konfirmasi.html?kegiatan=Rapat+Evaluasi+dan+Monitoring+Capaian+IKU+Triwulan+III&lokasi=Ruang+Rapat+Pimpinan+Lt.+6,+Gedung+A"
-                   class="btn btn-outline-dark btn-sm"
-                   id="btn-konfirmasi-5"
-                   aria-label="Konfirmasi kehadiran untuk Rapat Evaluasi IKU Triwulan III">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <polyline points="20 6 9 17 4 12"/>
-                  </svg>
-                  Konfirmasi Hadir
-                </a>
-              </div>
-            </div>
-          </li>
-
-        </ul>
+      <!-- ============================================================
+           3. KEGIATAN LAINNYA (sudah lewat, tapi masih bisa presensi)
+           ============================================================ -->
+      <section aria-labelledby="other-section-label" id="other-section" style="display:none">
+        <div class="other-section-header animate-fade-up">
+          <span class="section-label" id="other-section-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15" aria-hidden="true" style="vertical-align:-2px;margin-right:4px">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            Kegiatan Lainnya
+          </span>
+        </div>
+        <ul class="activity-list" id="other-list" role="list" aria-label="Daftar kegiatan lainnya"></ul>
       </section>
 
     </div><!-- /content-wrap -->
