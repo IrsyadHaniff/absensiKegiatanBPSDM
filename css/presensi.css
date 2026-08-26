@@ -36,8 +36,12 @@
   display: flex;
   flex-direction: column;
   gap: 0;
+  min-width: 0;
 }
 
+.presensi-form-card form > *{
+  min-width: 0;
+}
 
 /* Decorative ambient glows */
 .presensi-body::before {
@@ -469,6 +473,12 @@
   margin-bottom: var(--space-2);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(240, 195, 50, 0.12);
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.signature-pad-wrap,
+.signature-canvas {
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .signature-pad-wrap:hover {
