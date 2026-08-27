@@ -48,54 +48,17 @@
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
 
-    // Fill background gelap
+    // Fill background canvas
     function fillDarkBg() {
       ctx.save();
       ctx.resetTransform ? ctx.resetTransform() : ctx.setTransform(1, 0, 0, 1, 0, 0);
-      // bg ttd
       ctx.fillStyle = "rgba(250, 192, 0, 0.29)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.restore();
     }
 
-    /* Ukuran canvas sesuai tampilan agar tidak blur */
-    // function resizeCanvas() {
-    //   const rect = canvas.getBoundingClientRect();
-    //   const dpr = window.devicePixelRatio || 1;
-
-    //   // Simpan gambar sebelum resize
-    //   const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
-    //   // Resolusi internal (bitmap) — dikali dpr biar tajam
-    //   canvas.width = rect.width * dpr;
-    //   canvas.height = rect.height * dpr;
-
-    //   // KUNCI ukuran TAMPIL (CSS) canvas
-    //   canvas.style.width = rect.width + "px";
-    //   canvas.style.height = rect.height + "px";
-
-    //   ctx.scale(dpr, dpr);
-
-    //   // Fill background gelap
-    //   fillDarkBg();
-
-    //   // Kembalikan style
-    //   ctx.strokeStyle = "#FFFFFF";
-    //   ctx.lineWidth = 2.8;
-    //   ctx.lineCap = "round";
-    //   ctx.lineJoin = "round";
-
-    //   // Restore gambar
-    //   if (hasSignature) ctx.putImageData(imgData, 0, 0);
-    // }
-
-    // resizeCanvas();
-    // if (document.fonts && document.fonts.ready) {
-    //   document.fonts.ready.then(function () {
-    //     resizeCanvas();
-    //   });
-    // }
-    // window.addEventListener("resize", resizeCanvas);
+    // Isi background saat pertama load (tanpa resize)
+    fillDarkBg();
 
     /* Dapatkan posisi relatif terhadap canvas */
     function getPos(e) {
@@ -278,23 +241,15 @@
   /** Reset form ke kondisi awal setelah submit berhasil */
   function resetForm() {
     form.reset();
-    // Reset canvas secara manual dengan DPR yang benar
-    // (resizeCanvas() tidak bisa diakses dari scope luar if-block)
+    // Bersihkan canvas tanpa mengubah dimensi (agar layout tidak bergeser)
     if (canvas && ctx) {
-      var rect = canvas.getBoundingClientRect();
-      var dpr = window.devicePixelRatio || 1;
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.scale(dpr, dpr);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = "rgba(250, 192, 0, 0.29)";
-      ctx.fillRect(0, 0, rect.width, rect.height);
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.strokeStyle = "#FFFFFF";
       ctx.lineWidth = 2.8;
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
-      // canvas.style.width = rect.width + "px";
-      // canvas.style.height = rect.height + "px";
       placeholder && placeholder.classList.remove("hidden");
     }
     hasSignature = false;
