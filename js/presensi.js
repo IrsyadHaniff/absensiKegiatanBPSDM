@@ -500,12 +500,12 @@ var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzXnuyvcNt6Z9NSoa
         tanggal    : tanggalHari
       })
       .then(function (hasil) {
-        console.log("[TTD] Upload berhasil:", hasil);
+        // console.log("[TTD] Upload berhasil:", hasil);
         tampilkanStatusLoading(btnSubmit, false);
         showSuccessPage(namaPeserta, kegiatanNama, new Date().toISOString());
       })
       .catch(function (err) {
-        console.error("[TTD] Upload gagal:", err);
+        // console.error("[TTD] Upload gagal:", err);
         tampilkanStatusLoading(btnSubmit, false);
         showErrorMessage("Gagal mengirim tanda tangan. Silakan coba lagi.");
       });
