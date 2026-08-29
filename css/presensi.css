@@ -262,9 +262,9 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: var(--color-success-alpha);
-  border: 1px solid rgba(34, 165, 107, 0.3);
-  color: var(--color-success);
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  color: #dc2626;
   border-radius: var(--radius-pill);
   padding: 4px 12px;
   font-size: 12px;
@@ -276,9 +276,31 @@
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--color-success);
+  background: #ef4444;
   animation: pulse-dot 2s infinite;
   flex-shrink: 0;
+}
+
+/* Status: Akan Datang — biru */
+.presensi-status-badge--upcoming {
+  background: rgba(59, 130, 246, 0.12);
+  border-color: rgba(59, 130, 246, 0.3);
+  color: #2563eb;
+}
+.presensi-status-badge--upcoming .presensi-status-dot {
+  background: #3b82f6;
+  animation: none;
+}
+
+/* Status: Selesai — hijau */
+.presensi-status-badge--done {
+  background: rgba(34, 197, 94, 0.1);
+  border-color: rgba(34, 197, 94, 0.25);
+  color: #15803d;
+}
+.presensi-status-badge--done .presensi-status-dot {
+  background: #22c55e;
+  animation: none;
 }
 
 /* ============================================================

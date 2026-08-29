@@ -336,8 +336,12 @@ function renderKegiatanList(container, list, type) {
     }
     // type 'upcoming' → showActions tetap false
 
-    const qNama   = enc(k.nama);
-    const qLokasi = enc(k.lokasi);
+    const qNama      = enc(k.nama);
+    const qLokasi    = enc(k.lokasi);
+    const qTanggal   = enc(k.tanggal    || '');
+    const qJam       = enc(k.jam        || '');
+    const qJamSelesai= enc(k.jamSelesai || '');
+    const qStatus    = enc(k.status     || '');
 
     // Label grace period (untuk "other" yang masih bisa presensi)
     const graceLabel = (type === 'other' && showActions)
@@ -351,7 +355,7 @@ function renderKegiatanList(container, list, type) {
       ? `<div class="activity-card-actions">
            ${graceLabel}
            <div class="activity-card-btns">
-             <a href="presensi.html?kegiatan=${qNama}&lokasi=${qLokasi}"
+             <a href="presensi.html?kegiatan=${qNama}&lokasi=${qLokasi}&tanggal=${qTanggal}&jam=${qJam}&jamSelesai=${qJamSelesai}&status=${qStatus}"
                 class="btn btn-gold btn-sm"
                 aria-label="Isi presensi untuk ${esc(k.nama)}">
                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -360,7 +364,7 @@ function renderKegiatanList(container, list, type) {
                </svg>
                Isi Presensi
              </a>
-             <a href="konfirmasi.html?kegiatan=${qNama}&lokasi=${qLokasi}"
+             <a href="konfirmasi.html?kegiatan=${qNama}&lokasi=${qLokasi}&tanggal=${qTanggal}&jam=${qJam}&jamSelesai=${qJamSelesai}&status=${qStatus}"
                 class="btn btn-outline-dark btn-sm"
                 aria-label="Konfirmasi kehadiran untuk ${esc(k.nama)}">
                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -633,7 +637,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initLoginButton();
   document.querySelectorAll('.badge-dot').forEach(d => d.setAttribute('aria-hidden', 'true'));
   fetchKegiatan();
-  startAutoRefresh(); // background refresh setiap 5 menit
+  startAutoRefresh(); // background refresh setiap 1 menit
 });
 
 window.fetchKegiatan = fetchKegiatan;

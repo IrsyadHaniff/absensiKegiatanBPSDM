@@ -4,28 +4,89 @@
  *
  * Fitur:
  * - Ambil nama & lokasi kegiatan dari URL query string
+ * - Kanvas tanda tangan digital (mouse + layar sentuh)
+ * - Upload tanda tangan ke Google Drive via Apps Script
  * - Turnstile mock (simulasi verifikasi)
  * - Validasi form sebelum submit diaktifkan
  */
 
 "use strict";
 
+/* ──────────────────────────────────────────────
+   URL Google Apps Script
+   ────────────────────────────────────────────── */
+var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzXnuyvcNt6Z9NSoavRjKFIWSgK45-rweqNGYy2WneFn1-G4hu-OCqNsvgxaVyTYePQjg/exec";
+
 (function () {
   /* ============================================================
-     1. QUERY STRING — nama & lokasi dari URL
+     1. QUERY STRING - nama & lokasi dari URL
      ============================================================ */
   function getQueryParam(name) {
     return new URLSearchParams(window.location.search).get(name);
   }
 
-  const kegiatanName = getQueryParam("kegiatan");
-  const kegiatanLokasi = getQueryParam("lokasi");
+  const kegiatanName       = getQueryParam("kegiatan");
+  const kegiatanLokasi     = getQueryParam("lokasi");
+  const kegiatanTanggal    = getQueryParam("tanggal");    // format "yyyy-MM-dd"
+  const kegiatanJam        = getQueryParam("jam");        // format "HH:MM"
+  const kegiatanJamSelesai = getQueryParam("jamSelesai");
+  const kegiatanStatus     = getQueryParam("status");     // "Sedang Berlangsung" | "Akan Datang" | "Selesai"
 
-  const titleEl = document.getElementById("kegiatan-title-presensi");
-  const lokasiEl = document.getElementById("kegiatan-lokasi-presensi");
+  const titleEl    = document.getElementById("kegiatan-title-presensi");
+  const lokasiEl   = document.getElementById("kegiatan-lokasi-presensi");
+  const tanggalEl  = document.getElementById("kegiatan-tanggal-presensi");
+  const jamEl      = document.getElementById("kegiatan-jam-presensi");
+  const jamWrap    = document.getElementById("kegiatan-jam-wrap");
+  const badgeEl    = document.getElementById("kegiatan-status-badge");
+  const statusTeks = document.getElementById("kegiatan-status-teks");
 
-  if (titleEl && kegiatanName) titleEl.textContent = decodeURIComponent(kegiatanName);
+  if (titleEl  && kegiatanName)   titleEl.textContent  = decodeURIComponent(kegiatanName);
   if (lokasiEl && kegiatanLokasi) lokasiEl.textContent = decodeURIComponent(kegiatanLokasi);
+
+  /* Tampilkan tanggal dalam format panjang: "Sabtu, 29 Agustus 2026" */
+  if (tanggalEl && kegiatanTanggal) {
+    var tgl = new Date(decodeURIComponent(kegiatanTanggal) + "T00:00:00");
+    if (!isNaN(tgl)) {
+      tanggalEl.textContent = tgl.toLocaleDateString("id-ID", {
+        weekday: "long", day: "numeric", month: "long", year: "numeric"
+      });
+    }
+  }
+
+  /* Tampilkan jam: "13.00 – 14.00 WIB" atau sembunyikan jika kosong */
+  if (jamEl) {
+    var jam      = kegiatanJam        ? decodeURIComponent(kegiatanJam).replace(":", ".") : "";
+    var jamSeles = kegiatanJamSelesai ? decodeURIComponent(kegiatanJamSelesai).replace(":", ".") : "";
+    if (jam) {
+      jamEl.textContent = jam + (jamSeles ? " – " + jamSeles : "") + " WIB";
+    } else if (jamWrap) {
+      jamWrap.style.display = "none"; // sembunyikan baris jam jika tidak ada data
+    }
+  }
+
+  /* Tampilkan status badge sesuai nilai dari sheet/index
+   * Nilai : "Sedang Berlangsung" | "Akan Datang" | "Selesai"
+   */
+  if (badgeEl && statusTeks && kegiatanStatus) {
+    var statusAsli = decodeURIComponent(kegiatanStatus).trim();
+
+    // Tentukan label teks, kelas CSS, dan apakah badge ditampilkan
+    var labelMap = {
+      "Sedang Berlangsung": { teks: "Sedang Berlangsung",  kelas: ""           },
+      "Akan Datang":        { teks: "Akan Datang",         kelas: "--upcoming" },
+      "Selesai":            { teks: "Kegiatan Telah Selesai", kelas: "--done"  }
+    };
+
+    var config = labelMap[statusAsli] || { teks: statusAsli, kelas: "" };
+
+    // Hapus varian lama dulu, lalu pasang varian baru
+    badgeEl.classList.remove("presensi-status-badge--upcoming", "presensi-status-badge--done");
+    if (config.kelas) {
+      badgeEl.classList.add("presensi-status-badge" + config.kelas);
+    }
+
+    statusTeks.textContent = config.teks;
+  }
 
   /* ============================================================
      2. TURNSTILE MOCK — simulasi UX verifikasi Cloudflare
@@ -66,6 +127,103 @@
   }
 
   /* ============================================================
+     3. KANVAS TANDA TANGAN
+     ============================================================ */
+  var kanvasTandaTangan = (function () {
+    var canvas      = document.getElementById("signature-canvas");
+    var placeholder = document.getElementById("signature-placeholder");
+    var btnHapus    = document.getElementById("btn-clear-signature");
+
+    if (!canvas) return { sudahDiisi: function () { return false; }, ambilGambar: function () { return null; } };
+
+    var ctx       = canvas.getContext("2d");
+    var sedangMenulis = false;
+    var adaGoresan    = false;
+
+    /* Atur ukuran kanvas agar resolusinya tajam di layar HiDPI */
+    function sesuaikanUkuranKanvas() {
+      var rect   = canvas.getBoundingClientRect();
+      var skala  = window.devicePixelRatio || 1;
+      canvas.width  = rect.width  * skala;
+      canvas.height = rect.height * skala;
+      ctx.scale(skala, skala);
+      ctx.strokeStyle = "#111827";
+      ctx.lineWidth   = 2.2;
+      ctx.lineCap     = "round";
+      ctx.lineJoin    = "round";
+    }
+    sesuaikanUkuranKanvas();
+
+    /* Ubah koordinat event menjadi posisi relatif terhadap kanvas */
+    function posisiDiKanvas(event) {
+      var rect = canvas.getBoundingClientRect();
+      var sumber = event.touches ? event.touches[0] : event;
+      return {
+        x: sumber.clientX - rect.left,
+        y: sumber.clientY - rect.top
+      };
+    }
+
+    function mulaiMenulis(event) {
+      event.preventDefault();
+      sedangMenulis = true;
+      var pos = posisiDiKanvas(event);
+      ctx.beginPath();
+      ctx.moveTo(pos.x, pos.y);
+    }
+
+    function lanjutMenulis(event) {
+      if (!sedangMenulis) return;
+      event.preventDefault();
+      var pos = posisiDiKanvas(event);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+
+      if (!adaGoresan) {
+        adaGoresan = true;
+        if (placeholder) placeholder.style.display = "none";
+        checkFormReady();
+      }
+    }
+
+    function selesaiMenulis() {
+      sedangMenulis = false;
+    }
+
+    /* Event mouse */
+    canvas.addEventListener("mousedown",  mulaiMenulis);
+    canvas.addEventListener("mousemove",  lanjutMenulis);
+    canvas.addEventListener("mouseup",    selesaiMenulis);
+    canvas.addEventListener("mouseleave", selesaiMenulis);
+
+    /* Event sentuh (mobile) */
+    canvas.addEventListener("touchstart", mulaiMenulis,  { passive: false });
+    canvas.addEventListener("touchmove",  lanjutMenulis, { passive: false });
+    canvas.addEventListener("touchend",   selesaiMenulis);
+
+    /* Tombol Hapus */
+    if (btnHapus) {
+      btnHapus.addEventListener("click", function () {
+        var rect  = canvas.getBoundingClientRect();
+        ctx.clearRect(0, 0, rect.width, rect.height);
+        adaGoresan = false;
+        if (placeholder) placeholder.style.display = "";
+        checkFormReady();
+      });
+    }
+
+    return {
+      /** Kembalikan true jika peserta sudah menggambar tanda tangan */
+      sudahDiisi: function () { return adaGoresan; },
+
+      /** Kembalikan gambar tanda tangan sebagai string base64 PNG */
+      ambilGambar: function () {
+        return adaGoresan ? canvas.toDataURL("image/png") : null;
+      }
+    };
+  })();
+
+  /* ============================================================
      4. VALIDASI FORM — aktifkan tombol submit
      ============================================================ */
   const form = document.getElementById("form-presensi");
@@ -86,8 +244,9 @@
     const jenisOk = !!document.querySelector('input[name="jenis-peserta"]:checked');
     const tipeOk = !!document.querySelector('input[name="tipe-kehadiran"]:checked');
     const pernyataanOk = checkboxPernyataan ? checkboxPernyataan.checked : false;
+    const tandaTanganOk = kanvasTandaTangan.sudahDiisi();
 
-    const ready = allFilled && jenisOk && tipeOk && pernyataanOk && isVerified;
+    const ready = allFilled && jenisOk && tipeOk && pernyataanOk && isVerified && tandaTanganOk;
 
     if (btnSubmit) {
       btnSubmit.disabled = !ready;
@@ -102,7 +261,7 @@
         if (!allFilled) missing.push("isi semua kolom wajib");
         if (!jenisOk) missing.push("pilih jenis peserta");
         if (!tipeOk) missing.push("pilih tipe kehadiran");
-
+        if (!tandaTanganOk) missing.push("buat tanda tangan");
         if (!pernyataanOk) missing.push("centang pernyataan");
         if (!isVerified) missing.push("selesaikan verifikasi");
         hint.textContent = missing.length ? "Harap: " + missing.join(", ") + "." : "Lengkapi form untuk mengirim.";
@@ -134,7 +293,7 @@
    * Tampilkan halaman sukses penuh menggantikan konten form.
    * @param {string} nama  - Nama peserta
    * @param {string} kegiatan - Nama kegiatan
-   * @param {string} waktu - Waktu presensi (ISO string)
+   * @param {string} waktu - Waktu presensi
    */
   function showSuccessPage(nama, kegiatan, waktu) {
     /* Sembunyikan elemen form utama */
@@ -244,8 +403,7 @@
       "</a>",
     ].join("");
 
-    /* Ganti seluruh konten <main> langsung — cara paling andal,
-       tidak ada risiko elemen lama masih terlihat */
+    /* Ganti seluruh konten <main> langsung */
     var mainEl = document.getElementById("main-content") || document.querySelector("main");
 
     if (mainEl) {
@@ -317,25 +475,81 @@
     }, 7000);
   }
 
+  /* ============================================================
+     5. SUBMIT — upload tanda tangan ke Drive, lalu tampil sukses
+     ============================================================ */
   if (form) {
     form.addEventListener("submit", function (e) {
       e.preventDefault();
 
-      if (!isVerified) return;
+      if (!isVerified || !kanvasTandaTangan.sudahDiisi()) return;
 
-      /* Kumpulkan data yang dibutuhkan untuk halaman sukses */
-      var namaPeserta = (document.getElementById("nama-peserta") || {}).value || "";
+      var gambarTandaTangan = kanvasTandaTangan.ambilGambar();
+      var namaPeserta  = (document.getElementById("nama-peserta")  || {}).value || "";
       var kegiatanNama = titleEl ? titleEl.textContent.trim() : "";
-      var waktu = new Date().toISOString();
+      var tanggalHari  = new Date().toISOString().slice(0, 10); // "yyyy-MM-dd"
 
-      console.log("[Presensi] Submit berhasil:", {
-        nama: namaPeserta,
-        kegiatan: kegiatanNama,
-        waktu: waktu,
+      /* Tampilkan status loading pada tombol */
+      tampilkanStatusLoading(btnSubmit, true);
+
+      /* Kirim tanda tangan ke Google Apps Script → Google Drive */
+      kirimTandaTangan({
+        signature  : gambarTandaTangan,
+        namaPeserta: namaPeserta,
+        kegiatan   : kegiatanNama,
+        tanggal    : tanggalHari
+      })
+      .then(function (hasil) {
+        console.log("[TTD] Upload berhasil:", hasil);
+        tampilkanStatusLoading(btnSubmit, false);
+        showSuccessPage(namaPeserta, kegiatanNama, new Date().toISOString());
+      })
+      .catch(function (err) {
+        console.error("[TTD] Upload gagal:", err);
+        tampilkanStatusLoading(btnSubmit, false);
+        showErrorMessage("Gagal mengirim tanda tangan. Silakan coba lagi.");
       });
-
-      /* Langsung tampilkan halaman sukses */
-      showSuccessPage(namaPeserta, kegiatanNama, waktu);
     });
+  }
+
+  /**
+   * Kirim tanda tangan (base64) ke Apps Script untuk disimpan di Drive.
+   * @param {Object} data  - { signature, namaPeserta, kegiatan, tanggal }
+   * @returns {Promise}    - resolve dengan respons JSON dari server
+   */
+  function kirimTandaTangan(data) {
+    return fetch(APPS_SCRIPT_URL, {
+      method  : "POST",
+      redirect: "follow",          // otomatis dari Apps Script
+      body    : JSON.stringify({
+        action     : "uploadTTD",
+        signature  : data.signature,
+        namaPeserta: data.namaPeserta,
+        kegiatan   : data.kegiatan,
+        tanggal    : data.tanggal
+      })
+    })
+    .then(function (res) {
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      return res.json();
+    })
+    .then(function (json) {
+      if (!json.success) throw new Error(json.error || "Upload gagal");
+      return json;
+    });
+  }
+
+  /**
+   * Ubah tampilan tombol submit saat loading / selesai.
+   * @param {HTMLElement} tombol  - elemen tombol
+   * @param {boolean}     loading - true = sedang loading
+   */
+  function tampilkanStatusLoading(tombol, loading) {
+    if (!tombol) return;
+    tombol.disabled = loading;
+    tombol.setAttribute("aria-disabled", String(loading));
+    tombol.innerHTML = loading
+      ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="animation:spin .8s linear infinite"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Mengirim...'
+      : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Kirim Kehadiran';
   }
 })();
