@@ -34,8 +34,9 @@
   }
 
   /* ============================================================
-     CLOUDFLARE TURNSTILE — verifikasi token asli
-     Callback dipanggil secara otomatis oleh widget Cloudflare.
+     CLOUDFLARE TURNSTILE — explicit rendering (menghindari race condition)
+     Cloudflare memanggil window.onloadTurnstileCallback setelah API siap.
+     Widget dirender manual dengan callbacks via closure.
      ============================================================ */
   const btnSubmit  = document.getElementById('btn-submit');
   const submitHint = document.getElementById('submit-hint');
@@ -44,57 +45,59 @@
   let turnstileToken = null;
 
   /**
-   * Dipanggil otomatis oleh Cloudflare Turnstile saat user berhasil diverifikasi.
-   * @param {string} token - token Turnstile dari Cloudflare
+   * Dipanggil oleh Cloudflare API setelah scriptnya selesai dimuat.
+   * Kita render widget di sini agar callbacks pasti sudah terdaftar.
    */
-  window.onTurnstileSuccess = function (token) {
-    turnstileToken = token;
-    isVerified     = true;
+  window.onloadTurnstileCallback = function () {
+    const container = document.getElementById('konfirmasi-turnstile-widget');
+    if (!container || !window.turnstile) return;
 
-    // Aktifkan tombol submit
-    if (btnSubmit) {
-      btnSubmit.disabled = false;
-      btnSubmit.removeAttribute('aria-disabled');
-    }
+    window.turnstile.render(container, {
+      sitekey : '0x4AAAAAsawvAEZtRtiTrGMikxky',
+      theme   : 'light',
 
-    if (submitHint) {
-      submitHint.textContent = 'Verifikasi berhasil. Klik "Kirim Konfirmasi" untuk mengirimkan data Anda.';
-    }
-  };
+      /* Berhasil diverifikasi */
+      callback: function (token) {
+        turnstileToken = token;
+        isVerified     = true;
 
-  /**
-   * Dipanggil saat terjadi error pada Turnstile (misal: jaringan gagal).
-   */
-  window.onTurnstileError = function () {
-    turnstileToken = null;
-    isVerified     = false;
+        if (btnSubmit) {
+          btnSubmit.disabled = false;
+          btnSubmit.removeAttribute('aria-disabled');
+        }
+        if (submitHint) {
+          submitHint.textContent = 'Verifikasi berhasil. Klik "Kirim Konfirmasi" untuk mengirimkan data Anda.';
+        }
+      },
 
-    if (btnSubmit) {
-      btnSubmit.disabled = true;
-      btnSubmit.setAttribute('aria-disabled', 'true');
-    }
+      /* Error jaringan / challenge gagal */
+      'error-callback': function () {
+        turnstileToken = null;
+        isVerified     = false;
 
-    if (submitHint) {
-      submitHint.textContent = 'Verifikasi gagal. Muat ulang halaman dan coba lagi.';
-    }
-  };
+        if (btnSubmit) {
+          btnSubmit.disabled = true;
+          btnSubmit.setAttribute('aria-disabled', 'true');
+        }
+        if (submitHint) {
+          submitHint.textContent = 'Verifikasi gagal. Muat ulang halaman dan coba lagi.';
+        }
+      },
 
-  /**
-   * Dipanggil saat token Turnstile sudah expired (>5 menit).
-   * Widget akan auto-refresh, tombol dinonaktifkan sementara.
-   */
-  window.onTurnstileExpired = function () {
-    turnstileToken = null;
-    isVerified     = false;
+      /* Token expired (>5 menit), widget auto-refresh */
+      'expired-callback': function () {
+        turnstileToken = null;
+        isVerified     = false;
 
-    if (btnSubmit) {
-      btnSubmit.disabled = true;
-      btnSubmit.setAttribute('aria-disabled', 'true');
-    }
-
-    if (submitHint) {
-      submitHint.textContent = 'Verifikasi telah kedaluwarsa. Silakan verifikasi ulang.';
-    }
+        if (btnSubmit) {
+          btnSubmit.disabled = true;
+          btnSubmit.setAttribute('aria-disabled', 'true');
+        }
+        if (submitHint) {
+          submitHint.textContent = 'Verifikasi telah kedaluwarsa. Silakan verifikasi ulang.';
+        }
+      }
+    });
   };
 
   /* ============================================================

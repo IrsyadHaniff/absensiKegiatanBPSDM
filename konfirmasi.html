@@ -58,8 +58,8 @@
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/konfirmasi.css" />
 
-  <!-- Cloudflare Turnstile -->
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <!-- Cloudflare Turnstile (explicit render agar callback pasti terdaftar sebelum widget aktif) -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback&render=explicit" async defer></script>
 </head>
 
 <body class="konfirmasi-page">
@@ -408,16 +408,9 @@
           Selesaikan verifikasi di bawah ini sebelum mengirim konfirmasi kehadiran Anda.
         </p>
 
-        <!-- Cloudflare Turnstile Widget -->
+        <!-- Cloudflare Turnstile Widget (dirender secara explicit via JS) -->
         <div class="turnstile-wrap">
-          <div class="cf-turnstile"
-            data-sitekey="0x4AAAAAsawvAEZtRtiTrGMikxky"
-            data-callback="onTurnstileSuccess"
-            data-error-callback="onTurnstileError"
-            data-expired-callback="onTurnstileExpired"
-            data-theme="light"
-            id="konfirmasi-turnstile-widget">
-          </div>
+          <div id="konfirmasi-turnstile-widget" data-theme="light"></div>
         </div>
 
         <!-- Submit Button -->

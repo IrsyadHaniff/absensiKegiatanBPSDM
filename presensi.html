@@ -31,8 +31,8 @@
   <link rel="stylesheet" href="css/konfirmasi.css" />
   <link rel="stylesheet" href="css/presensi.css" />
 
-  <!-- Cloudflare Turnstile -->
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <!-- Cloudflare Turnstile (explicit render agar callback pasti terdaftar sebelum widget aktif) -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback&render=explicit" async defer></script>
 </head>
 
 <body class="presensi-body">
@@ -293,16 +293,9 @@
             <span class="presensi-checkbox-text">Saya menyatakan ini adalah tanda tangan saya yang sebenarnya</span>
           </label>
 
-          <!-- Cloudflare Turnstile Widget -->
+          <!-- Cloudflare Turnstile Widget (dirender secara explicit via JS) -->
           <div style="margin-top: 20px;">
-            <div class="cf-turnstile"
-              data-sitekey="0x4AAAAAAEZtRtiTrGMikxky"
-              data-callback="onTurnstileSuccess"
-              data-error-callback="onTurnstileError"
-              data-expired-callback="onTurnstileExpired"
-              data-theme="light"
-              id="presensi-turnstile-widget">
-            </div>
+            <div id="presensi-turnstile-widget" data-theme="light"></div>
           </div>
         </section>
 

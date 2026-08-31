@@ -89,39 +89,47 @@ var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzXnuyvcNt6Z9NSoa
   }
 
   /* ============================================================
-     2. CLOUDFLARE TURNSTILE — verifikasi token asli
+     2. CLOUDFLARE TURNSTILE — explicit rendering (menghindari race condition)
+     Cloudflare memanggil window.onloadTurnstileCallback setelah API siap.
+     Lalu kita render widget secara manual dengan callbacks via closure,
+     sehingga tidak ada risiko callback dipanggil sebelum variabel siap.
      ============================================================ */
   var turnstileToken = null;
   var isVerified     = false;
 
   /**
-   * Dipanggil otomatis oleh Cloudflare Turnstile saat user berhasil diverifikasi.
-   * Token yang diterima akan dikirim ke server (Apps Script) bersama form submission.
-   * @param {string} token - token Turnstile dari Cloudflare
+   * Dipanggil oleh Cloudflare API setelah scriptnya selesai dimuat.
+   * Kita render widget di sini agar callbacks pasti sudah terdaftar.
    */
-  window.onTurnstileSuccess = function (token) {
-    turnstileToken = token;
-    isVerified     = true;
-    checkFormReady();
-  };
+  window.onloadTurnstileCallback = function () {
+    var container = document.getElementById("presensi-turnstile-widget");
+    if (!container || !window.turnstile) return;
 
-  /**
-   * Dipanggil saat terjadi error pada Turnstile (misal: jaringan gagal).
-   */
-  window.onTurnstileError = function () {
-    turnstileToken = null;
-    isVerified     = false;
-    checkFormReady();
-  };
+    window.turnstile.render(container, {
+      sitekey : "0x4AAAAAsawvAEZtRtiTrGMikxky",
+      theme   : "light",
 
-  /**
-   * Dipanggil saat token Turnstile sudah expired (>5 menit).
-   * Widget akan auto-refresh, token direset sementara.
-   */
-  window.onTurnstileExpired = function () {
-    turnstileToken = null;
-    isVerified     = false;
-    checkFormReady();
+      /* Berhasil diverifikasi */
+      callback: function (token) {
+        turnstileToken = token;
+        isVerified     = true;
+        checkFormReady();
+      },
+
+      /* Error jaringan / challenge gagal */
+      "error-callback": function () {
+        turnstileToken = null;
+        isVerified     = false;
+        checkFormReady();
+      },
+
+      /* Token expired (>5 menit), widget auto-refresh */
+      "expired-callback": function () {
+        turnstileToken = null;
+        isVerified     = false;
+        checkFormReady();
+      }
+    });
   };
 
   /* ============================================================
