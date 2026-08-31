@@ -30,6 +30,9 @@
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/konfirmasi.css" />
   <link rel="stylesheet" href="css/presensi.css" />
+
+  <!-- Cloudflare Turnstile -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 
 <body class="presensi-body">
@@ -290,24 +293,15 @@
             <span class="presensi-checkbox-text">Saya menyatakan ini adalah tanda tangan saya yang sebenarnya</span>
           </label>
 
-          <!-- Turnstile Mock -->
+          <!-- Cloudflare Turnstile Widget -->
           <div style="margin-top: 20px;">
-            <div class="presensi-turnstile-mock" id="presensi-turnstile-mock"
-              role="button" tabindex="0" aria-label="Verifikasi: Saya bukan robot" aria-live="polite">
-              <div class="presensi-turnstile-checkbox" id="presensi-turnstile-checkbox" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="20 6 9 17 4 12"/>
-                </svg>
-              </div>
-              <span class="presensi-turnstile-text" id="presensi-turnstile-text">Saya bukan robot</span>
-              <div class="presensi-turnstile-brand" aria-hidden="true">
-                <svg class="presensi-turnstile-brand-logo" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M21.1 13.2c.1-.4.1-.8 0-1.2-.8-3.4-4.1-5.9-7.9-5.9-3.2 0-6 1.8-7.4 4.5-.3 0-.5-.1-.8-.1-2.2 0-4 1.7-4 3.8s1.8 3.8 4 3.8h15.4c1.8 0 3.2-1.4 3.2-3.1-.1-1.5-1.2-2.7-2.5-2.9V13.2z" fill="#F6821F"/>
-                  <path d="M22.6 13.8h-.3c-.1 0-.2-.1-.2-.2l-.2-.8c-.2-.8-.9-1.4-1.8-1.4-.3 0-.6.1-.9.2-.4-2.2-2.4-3.9-4.8-3.9-2.7 0-4.8 2.1-4.8 4.7v.2c-.2-.1-.4-.1-.7-.1-1.4 0-2.5 1.1-2.5 2.4s1.1 2.4 2.5 2.4h13.7c1.1 0 2-.8 2-1.8s-.9-1.7-2-1.7z" fill="#FBAD41"/>
-                </svg>
-                <div class="presensi-turnstile-brand-text">Cloudflare<br/>Turnstile</div>
-                <div class="presensi-turnstile-brand-links">Privasi &middot; Bantuan</div>
-              </div>
+            <div class="cf-turnstile"
+              data-sitekey="0x4AAAAAAEZtRtiTrGMikxky"
+              data-callback="onTurnstileSuccess"
+              data-error-callback="onTurnstileError"
+              data-expired-callback="onTurnstileExpired"
+              data-theme="light"
+              id="presensi-turnstile-widget">
             </div>
           </div>
         </section>

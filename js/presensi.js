@@ -6,7 +6,7 @@
  * - Ambil nama & lokasi kegiatan dari URL query string
  * - Kanvas tanda tangan digital (mouse + layar sentuh)
  * - Upload tanda tangan ke Google Drive via Apps Script
- * - Turnstile mock (simulasi verifikasi)
+ * - Cloudflare Turnstile (verifikasi token asli)
  * - Validasi form sebelum submit diaktifkan
  */
 
@@ -89,42 +89,40 @@ var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzXnuyvcNt6Z9NSoa
   }
 
   /* ============================================================
-     2. TURNSTILE MOCK — simulasi UX verifikasi Cloudflare
+     2. CLOUDFLARE TURNSTILE — verifikasi token asli
      ============================================================ */
-  const turnstileMock = document.getElementById("presensi-turnstile-mock");
-  const turnstileText = document.getElementById("presensi-turnstile-text");
-  const turnstileCb = document.getElementById("presensi-turnstile-checkbox");
+  var turnstileToken = null;
+  var isVerified     = false;
 
-  let isVerified = false;
-  let isLoading = false;
+  /**
+   * Dipanggil otomatis oleh Cloudflare Turnstile saat user berhasil diverifikasi.
+   * Token yang diterima akan dikirim ke server (Apps Script) bersama form submission.
+   * @param {string} token - token Turnstile dari Cloudflare
+   */
+  window.onTurnstileSuccess = function (token) {
+    turnstileToken = token;
+    isVerified     = true;
+    checkFormReady();
+  };
 
-  if (turnstileMock) {
-    function triggerVerify() {
-      if (isVerified || isLoading) return;
+  /**
+   * Dipanggil saat terjadi error pada Turnstile (misal: jaringan gagal).
+   */
+  window.onTurnstileError = function () {
+    turnstileToken = null;
+    isVerified     = false;
+    checkFormReady();
+  };
 
-      isLoading = true;
-      turnstileMock.classList.add("is-loading");
-      if (turnstileText) turnstileText.textContent = "Memverifikasi...";
-
-      setTimeout(function () {
-        isLoading = false;
-        isVerified = true;
-        turnstileMock.classList.remove("is-loading");
-        turnstileMock.classList.add("is-verified");
-        if (turnstileText) turnstileText.textContent = "Berhasil!";
-        turnstileMock.setAttribute("aria-label", "Verifikasi berhasil");
-        checkFormReady();
-      }, 1200);
-    }
-
-    turnstileMock.addEventListener("click", triggerVerify);
-    turnstileMock.addEventListener("keydown", function (e) {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        triggerVerify();
-      }
-    });
-  }
+  /**
+   * Dipanggil saat token Turnstile sudah expired (>5 menit).
+   * Widget akan auto-refresh, token direset sementara.
+   */
+  window.onTurnstileExpired = function () {
+    turnstileToken = null;
+    isVerified     = false;
+    checkFormReady();
+  };
 
   /* ============================================================
      3. KANVAS TANDA TANGAN
@@ -492,22 +490,47 @@ var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzXnuyvcNt6Z9NSoa
       /* Tampilkan status loading pada tombol */
       tampilkanStatusLoading(btnSubmit, true);
 
-      /* Kirim tanda tangan ke Google Apps Script → Google Drive */
-      kirimTandaTangan({
-        signature  : gambarTandaTangan,
-        namaPeserta: namaPeserta,
-        kegiatan   : kegiatanNama,
-        tanggal    : tanggalHari
+      /* Validasi token Turnstile di server (Apps Script) sebelum menyimpan data */
+      fetch(APPS_SCRIPT_URL, {
+        method  : "POST",
+        redirect: "follow",
+        body    : JSON.stringify({
+          action         : "verifyTurnstile",
+          turnstileToken : turnstileToken
+        })
+      })
+      .then(function (res) {
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        return res.json();
+      })
+      .then(function (json) {
+        if (!json.success) throw new Error("Verifikasi Turnstile gagal: " + (json.error || ""));
+
+        /* Token valid — lanjut upload tanda tangan */
+        return kirimTandaTangan({
+          signature  : gambarTandaTangan,
+          namaPeserta: namaPeserta,
+          kegiatan   : kegiatanNama,
+          tanggal    : tanggalHari
+        });
       })
       .then(function (hasil) {
-        // console.log("[TTD] Upload berhasil:", hasil);
         tampilkanStatusLoading(btnSubmit, false);
         showSuccessPage(namaPeserta, kegiatanNama, new Date().toISOString());
       })
       .catch(function (err) {
-        // console.error("[TTD] Upload gagal:", err);
         tampilkanStatusLoading(btnSubmit, false);
-        showErrorMessage("Gagal mengirim tanda tangan. Silakan coba lagi.");
+        var pesanError = String(err.message || err);
+        if (pesanError.indexOf("Turnstile") !== -1) {
+          showErrorMessage("Verifikasi keamanan gagal. Muat ulang halaman dan coba lagi.");
+          /* Reset widget Turnstile agar user bisa coba ulang */
+          if (window.turnstile) window.turnstile.reset();
+          isVerified     = false;
+          turnstileToken = null;
+          checkFormReady();
+        } else {
+          showErrorMessage("Gagal mengirim tanda tangan. Silakan coba lagi.");
+        }
       });
     });
   }

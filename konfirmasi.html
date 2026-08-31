@@ -58,8 +58,8 @@
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/konfirmasi.css" />
 
-  <!-- TODO: aktifkan saat integrasi backend -->
-  <!-- <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script> -->
+  <!-- Cloudflare Turnstile -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 
 <body class="konfirmasi-page">
@@ -408,45 +408,15 @@
           Selesaikan verifikasi di bawah ini sebelum mengirim konfirmasi kehadiran Anda.
         </p>
 
-        <!-- Cloudflare Turnstile Widget Area -->
-        <!-- TODO: aktifkan script Turnstile asli saat integrasi backend:
-             <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-        -->
+        <!-- Cloudflare Turnstile Widget -->
         <div class="turnstile-wrap">
-          <!-- Placeholder Turnstile (non-fungsional, tampilan mock saja) -->
-          <!-- TODO: ganti div di bawah dengan widget Turnstile asli saat backend siap:
-               <div class="cf-turnstile" data-sitekey="YOUR_SITE_KEY" data-callback="onTurnstileVerified"></div>
-          -->
-          <div
-            class="turnstile-mock"
-            id="turnstile-mock"
-            role="button"
-            tabindex="0"
-            aria-label="Verifikasi keamanan Cloudflare Turnstile &ndash; klik untuk memverifikasi"
-            aria-pressed="false"
-            aria-live="polite"
-          >
-            <!-- Checkbox visual -->
-            <div class="turnstile-mock-checkbox" aria-hidden="true">
-              <!-- Centang (tampil saat verified) -->
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
-            </div>
-
-            <!-- Teks status -->
-            <span class="turnstile-mock-text" id="turnstile-text">Saya bukan robot</span>
-
-            <!-- Cloudflare Branding -->
-            <div class="turnstile-mock-brand" aria-hidden="true">
-              <!-- Cloudflare logo (simplified SVG) -->
-              <svg class="turnstile-mock-brand-logo" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path d="M21.1 13.2c.1-.4.1-.8 0-1.2-.8-3.4-4.1-5.9-7.9-5.9-3.2 0-6 1.8-7.4 4.5-.3 0-.5-.1-.8-.1-2.2 0-4 1.7-4 3.8s1.8 3.8 4 3.8h15.4c1.8 0 3.2-1.4 3.2-3.1-.1-1.5-1.2-2.7-2.5-2.9V13.2z" fill="#F6821F"/>
-                <path d="M22.6 13.8h-.3c-.1 0-.2-.1-.2-.2l-.2-.8c-.2-.8-.9-1.4-1.8-1.4-.3 0-.6.1-.9.2-.4-2.2-2.4-3.9-4.8-3.9-2.7 0-4.8 2.1-4.8 4.7v.2c-.2-.1-.4-.1-.7-.1-1.4 0-2.5 1.1-2.5 2.4s1.1 2.4 2.5 2.4h13.7c1.1 0 2-.8 2-1.8s-.9-1.7-2-1.7z" fill="#FBAD41"/>
-              </svg>
-              <div class="turnstile-mock-brand-text">Cloudflare<br/>Turnstile</div>
-              <div class="turnstile-mock-brand-links">Privasi · Bantuan</div>
-            </div>
+          <div class="cf-turnstile"
+            data-sitekey="0x4AAAAAsawvAEZtRtiTrGMikxky"
+            data-callback="onTurnstileSuccess"
+            data-error-callback="onTurnstileError"
+            data-expired-callback="onTurnstileExpired"
+            data-theme="light"
+            id="konfirmasi-turnstile-widget">
           </div>
         </div>
 

@@ -5,9 +5,6 @@
  * TODO: inisialisasi Firebase App & Firestore di sini saat backend siap
  * import { initializeApp } from "firebase/app";
  * import { getFirestore, collection, addDoc, serverTimestamp } from "firebase/firestore";
- *
- * TODO: inisialisasi Cloudflare Turnstile callback:
- * window.onTurnstileVerified = function(token) { ... }
  */
 
 'use strict';
@@ -37,27 +34,22 @@
   }
 
   /* ============================================================
-     TURNSTILE MOCK — simulasi UX verifikasi
-     Klik → loading (1.2 detik) → verified → aktifkan tombol submit
+     CLOUDFLARE TURNSTILE — verifikasi token asli
+     Callback dipanggil secara otomatis oleh widget Cloudflare.
      ============================================================ */
-  const turnstileMock = document.getElementById('turnstile-mock');
-  const turnstileText = document.getElementById('turnstile-text');
-  const btnSubmit     = document.getElementById('btn-submit');
-  const submitHint    = document.getElementById('submit-hint');
+  const btnSubmit  = document.getElementById('btn-submit');
+  const submitHint = document.getElementById('submit-hint');
 
-  let isVerified = false;
-  let isLoading  = false;
+  let isVerified    = false;
+  let turnstileToken = null;
 
-  function setVerified() {
-    isVerified = true;
-    isLoading  = false;
-
-    turnstileMock.classList.remove('is-loading');
-    turnstileMock.classList.add('is-verified');
-    turnstileMock.setAttribute('aria-pressed', 'true');
-    turnstileMock.setAttribute('aria-label', 'Verifikasi berhasil – Anda bukan robot');
-
-    if (turnstileText) turnstileText.textContent = 'Berhasil!';
+  /**
+   * Dipanggil otomatis oleh Cloudflare Turnstile saat user berhasil diverifikasi.
+   * @param {string} token - token Turnstile dari Cloudflare
+   */
+  window.onTurnstileSuccess = function (token) {
+    turnstileToken = token;
+    isVerified     = true;
 
     // Aktifkan tombol submit
     if (btnSubmit) {
@@ -68,43 +60,42 @@
     if (submitHint) {
       submitHint.textContent = 'Verifikasi berhasil. Klik "Kirim Konfirmasi" untuk mengirimkan data Anda.';
     }
+  };
 
-    // TODO: saat integrasi Turnstile asli, token akan diterima via callback
-    // window.onTurnstileVerified = function(token) {
-    //   // simpan token untuk dikirim bersama form submission ke backend
-    //   document.querySelector('input[name="cf-turnstile-response"]').value = token;
-    //   setVerified();
-    // };
-  }
+  /**
+   * Dipanggil saat terjadi error pada Turnstile (misal: jaringan gagal).
+   */
+  window.onTurnstileError = function () {
+    turnstileToken = null;
+    isVerified     = false;
 
-  function setLoading() {
-    isLoading = true;
-    turnstileMock.classList.add('is-loading');
-    if (turnstileText) turnstileText.textContent = 'Memverifikasi...';
-    turnstileMock.setAttribute('aria-label', 'Sedang memverifikasi...');
-  }
+    if (btnSubmit) {
+      btnSubmit.disabled = true;
+      btnSubmit.setAttribute('aria-disabled', 'true');
+    }
 
-  if (turnstileMock) {
-    // Klik handler
-    const handleVerify = () => {
-      if (isVerified || isLoading) return;
+    if (submitHint) {
+      submitHint.textContent = 'Verifikasi gagal. Muat ulang halaman dan coba lagi.';
+    }
+  };
 
-      setLoading();
+  /**
+   * Dipanggil saat token Turnstile sudah expired (>5 menit).
+   * Widget akan auto-refresh, tombol dinonaktifkan sementara.
+   */
+  window.onTurnstileExpired = function () {
+    turnstileToken = null;
+    isVerified     = false;
 
-      // Simulasi delay verifikasi (1.2 detik)
-      setTimeout(setVerified, 1200);
-    };
+    if (btnSubmit) {
+      btnSubmit.disabled = true;
+      btnSubmit.setAttribute('aria-disabled', 'true');
+    }
 
-    turnstileMock.addEventListener('click', handleVerify);
-
-    // Keyboard accessibility (Enter / Space)
-    turnstileMock.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        handleVerify();
-      }
-    });
-  }
+    if (submitHint) {
+      submitHint.textContent = 'Verifikasi telah kedaluwarsa. Silakan verifikasi ulang.';
+    }
+  };
 
   /* ============================================================
      FORM VALIDATION — sisi klien
@@ -134,13 +125,12 @@
       e.preventDefault();
 
       // Cek verifikasi Turnstile
-      if (!isVerified) {
-        if (turnstileMock) {
-          turnstileMock.focus();
-          turnstileMock.style.boxShadow = '0 0 0 3px rgba(240, 195, 50, 0.5)';
-          setTimeout(() => {
-            if (turnstileMock) turnstileMock.style.boxShadow = '';
-          }, 2000);
+      if (!isVerified || !turnstileToken) {
+        const widget = document.getElementById('konfirmasi-turnstile-widget');
+        if (widget) {
+          widget.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          widget.style.outline = '2px solid rgba(240, 195, 50, 0.7)';
+          setTimeout(() => { if (widget) widget.style.outline = ''; }, 2000);
         }
         return;
       }
@@ -158,9 +148,10 @@
         payload[key] = value.trim();
       });
 
-      payload.kegiatan = kegiatanName || titleEl?.textContent || '';
-      payload.lokasi   = kegiatanLokasi || lokasiEl?.textContent || '';
-      payload.timestamp = new Date().toISOString();
+      payload.kegiatan      = kegiatanName || titleEl?.textContent || '';
+      payload.lokasi        = kegiatanLokasi || lokasiEl?.textContent || '';
+      payload.timestamp     = new Date().toISOString();
+      payload.turnstileToken = turnstileToken; // dikirim ke Apps Script untuk validasi server-side
 
       // TODO: Kirim ke Firestore saat backend siap:
       // import { getFirestore, collection, addDoc, serverTimestamp } from "firebase/firestore";
