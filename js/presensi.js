@@ -106,7 +106,7 @@ var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzXnuyvcNt6Z9NSoa
     if (!container || !window.turnstile) return;
 
     window.turnstile.render(container, {
-      sitekey : "0x4AAAAAsawvAEZtRtiTrGMikxky",
+      sitekey : "0x4AAAAAAEZtRtiTrGMikxky",
       theme   : "light",
 
       /* Berhasil diverifikasi */
