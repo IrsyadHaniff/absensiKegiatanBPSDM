@@ -490,10 +490,26 @@ var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzXnuyvcNt6Z9NSoa
 
       if (!isVerified || !kanvasTandaTangan.sudahDiisi()) return;
 
+      /* Kumpulkan semua data form */
       var gambarTandaTangan = kanvasTandaTangan.ambilGambar();
-      var namaPeserta  = (document.getElementById("nama-peserta")  || {}).value || "";
-      var kegiatanNama = titleEl ? titleEl.textContent.trim() : "";
-      var tanggalHari  = new Date().toISOString().slice(0, 10); // "yyyy-MM-dd"
+      var namaPeserta   = (document.getElementById("nama-peserta")     || {}).value || "";
+      var jabatan       = (document.getElementById("jabatan-presensi") || {}).value || "";
+      var instansi      = (document.getElementById("instansi-presensi")|| {}).value || "";
+      var unitKerja     = (document.getElementById("unit-kerja")       || {}).value || "";
+      var nipNrpNik     = (document.getElementById("nip-presensi")     || {}).value || "";
+      var whatsapp      = (document.getElementById("whatsapp-presensi")|| {}).value || "";
+      var email         = (document.getElementById("email-presensi")   || {}).value || "";
+      var jenisPeserta  = (document.querySelector('input[name="jenis-peserta"]:checked')  || {}).value || "";
+      var tipePeserta   = (document.querySelector('input[name="tipe-kehadiran"]:checked') || {}).value || "";
+
+      // Kapitalisasi Tipe Peserta: "narasumber" "Narasumber", "peserta"  "Peserta"
+      var tipePesertaLabel = tipePeserta
+        ? tipePeserta.charAt(0).toUpperCase() + tipePeserta.slice(1)
+        : "";
+
+      var kegiatanNama  = titleEl ? titleEl.textContent.trim() : "";
+      var idKegiatan    = getQueryParam("id") || "";
+      var tanggalHari   = new Date().toISOString().slice(0, 10); // "yyyy-MM-dd"
 
       /* Tampilkan status loading pada tombol */
       tampilkanStatusLoading(btnSubmit, true);
@@ -514,12 +530,21 @@ var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzXnuyvcNt6Z9NSoa
       .then(function (json) {
         if (!json.success) throw new Error("Verifikasi Turnstile gagal: " + (json.error || ""));
 
-        /* Token valid — lanjut upload tanda tangan */
-        return kirimTandaTangan({
-          signature  : gambarTandaTangan,
-          namaPeserta: namaPeserta,
-          kegiatan   : kegiatanNama,
-          tanggal    : tanggalHari
+        /* Token valid — kirim semua data presensi + TTD ke Apps Script */
+        return kirimPresensi({
+          signature      : gambarTandaTangan,
+          namaPeserta    : namaPeserta.trim(),
+          jabatan        : jabatan.trim(),
+          instansi       : instansi.trim(),
+          unitKerja      : unitKerja.trim(),
+          nipNrpNik      : nipNrpNik.trim(),
+          whatsapp       : whatsapp.trim(),
+          email          : email.trim(),
+          jenisPeserta   : jenisPeserta,
+          tipePeserta    : tipePesertaLabel,
+          idKegiatan     : idKegiatan,
+          kegiatan       : kegiatanNama,
+          tanggal        : tanggalHari
         });
       })
       .then(function (hasil) {
@@ -537,27 +562,43 @@ var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzXnuyvcNt6Z9NSoa
           turnstileToken = null;
           checkFormReady();
         } else {
-          showErrorMessage("Gagal mengirim tanda tangan. Silakan coba lagi.");
+          showErrorMessage("Gagal mengirim data presensi. Silakan coba lagi.");
         }
       });
     });
   }
 
   /**
-   * Kirim tanda tangan (base64) ke Apps Script untuk disimpan di Drive.
-   * @param {Object} data  - { signature, namaPeserta, kegiatan, tanggal }
-   * @returns {Promise}    - resolve dengan respons JSON dari server
+   * Kirim seluruh data presensi + tanda tangan (base64) ke Apps Script.
+   * Apps Script akan:
+   *   1. Upload TTD ke folder Google Drive dapat link file
+   *   2. Tulis satu baris ke sheet Presensi_Kegiatan dengan semua kolom:
+   *      No | Id Kegiatan | Nama Peserta | Jabatan | Instansi | Unit Kerja |
+   *      NIP | No Whatsapp | Email | Jenis Peserta | Tipe Peserta |
+   *      Link TTD | Pernyataan TTD Valid | Status Kehadiran | Timestamp
+   *
+   * @param {Object} data - semua field form + signature base64
+   * @returns {Promise}   - resolve dengan respons JSON dari server
    */
-  function kirimTandaTangan(data) {
+  function kirimPresensi(data) {
     return fetch(APPS_SCRIPT_URL, {
       method  : "POST",
-      redirect: "follow",          // otomatis dari Apps Script
+      redirect: "follow",
       body    : JSON.stringify({
-        action     : "uploadTTD",
-        signature  : data.signature,
-        namaPeserta: data.namaPeserta,
-        kegiatan   : data.kegiatan,
-        tanggal    : data.tanggal
+        action       : "savePresensi",  // action baru — gabungan upload TTD + tulis sheet
+        signature    : data.signature,
+        namaPeserta  : data.namaPeserta,
+        jabatan      : data.jabatan,
+        instansi     : data.instansi,
+        unitKerja    : data.unitKerja,
+        nipNrpNik    : data.nipNrpNik,
+        whatsapp     : data.whatsapp,
+        email        : data.email,
+        jenisPeserta : data.jenisPeserta,
+        tipePeserta  : data.tipePeserta,   // "Narasumber" | "Peserta"
+        idKegiatan   : data.idKegiatan,
+        kegiatan     : data.kegiatan,
+        tanggal      : data.tanggal
       })
     })
     .then(function (res) {
@@ -565,7 +606,7 @@ var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzXnuyvcNt6Z9NSoa
       return res.json();
     })
     .then(function (json) {
-      if (!json.success) throw new Error(json.error || "Upload gagal");
+      if (!json.success) throw new Error(json.error || "Simpan presensi gagal");
       return json;
     });
   }
