@@ -31,17 +31,28 @@ var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzXnuyvcNt6Z9NSoa
   const kegiatanJam        = getQueryParam("jam");        // format "HH:MM"
   const kegiatanJamSelesai = getQueryParam("jamSelesai");
   const kegiatanStatus     = getQueryParam("status");     // "Sedang Berlangsung" | "Akan Datang" | "Selesai"
+  const kegiatanKeterangan = getQueryParam("keterangan"); // keterangan / agenda (opsional)
 
-  const titleEl    = document.getElementById("kegiatan-title-presensi");
-  const lokasiEl   = document.getElementById("kegiatan-lokasi-presensi");
-  const tanggalEl  = document.getElementById("kegiatan-tanggal-presensi");
-  const jamEl      = document.getElementById("kegiatan-jam-presensi");
-  const jamWrap    = document.getElementById("kegiatan-jam-wrap");
-  const badgeEl    = document.getElementById("kegiatan-status-badge");
-  const statusTeks = document.getElementById("kegiatan-status-teks");
+  const titleEl        = document.getElementById("kegiatan-title-presensi");
+  const keteranganEl   = document.getElementById("kegiatan-keterangan-presensi");
+  const lokasiEl       = document.getElementById("kegiatan-lokasi-presensi");
+  const tanggalEl      = document.getElementById("kegiatan-tanggal-presensi");
+  const jamEl          = document.getElementById("kegiatan-jam-presensi");
+  const jamWrap        = document.getElementById("kegiatan-jam-wrap");
+  const badgeEl        = document.getElementById("kegiatan-status-badge");
+  const statusTeks     = document.getElementById("kegiatan-status-teks");
 
   if (titleEl  && kegiatanName)   titleEl.textContent  = decodeURIComponent(kegiatanName);
   if (lokasiEl && kegiatanLokasi) lokasiEl.textContent = decodeURIComponent(kegiatanLokasi);
+
+  /* Tampilkan keterangan/agenda jika ada */
+  if (keteranganEl && kegiatanKeterangan) {
+    var ket = decodeURIComponent(kegiatanKeterangan).trim();
+    if (ket) {
+      keteranganEl.textContent = ket;
+      keteranganEl.style.display = '';
+    }
+  }
 
   /* Tampilkan tanggal dalam format panjang: "Sabtu, 29 Agustus 2026" */
   if (tanggalEl && kegiatanTanggal) {

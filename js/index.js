@@ -343,6 +343,7 @@ function renderKegiatanList(container, list, type) {
     const qJamSelesai= enc(k.jamSelesai || '');
     const qStatus    = enc(k.status     || '');
     const qId        = enc(k.id         || '');
+    const qKeterangan= enc(k.keterangan || '');
 
     // Label grace period (untuk "other" yang masih bisa presensi)
     const graceLabel = (type === 'other' && showActions)
@@ -356,7 +357,7 @@ function renderKegiatanList(container, list, type) {
       ? `<div class="activity-card-actions">
            ${graceLabel}
            <div class="activity-card-btns">
-             <a href="presensi.html?id=${qId}&kegiatan=${qNama}&lokasi=${qLokasi}&tanggal=${qTanggal}&jam=${qJam}&jamSelesai=${qJamSelesai}&status=${qStatus}"
+             <a href="presensi.html?id=${qId}&kegiatan=${qNama}&lokasi=${qLokasi}&tanggal=${qTanggal}&jam=${qJam}&jamSelesai=${qJamSelesai}&status=${qStatus}&keterangan=${qKeterangan}"
                 class="btn btn-gold btn-sm"
                 aria-label="Isi presensi untuk ${esc(k.nama)}">
                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -407,6 +408,7 @@ function renderKegiatanList(container, list, type) {
             <h2 class="activity-card-name">${esc(k.nama)}</h2>
             ${renderStatusBadge(k.status)}
           </div>
+          ${k.keterangan ? `<p class="activity-card-keterangan">${esc(k.keterangan)}</p>` : ''}
           <div class="activity-card-meta" role="list">
             <div class="activity-card-meta-item" role="listitem">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

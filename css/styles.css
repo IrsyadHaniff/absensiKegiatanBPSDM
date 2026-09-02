@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    Sistem Presensi Elektronik Pusbangkom
    styles.css — Design System & Component Library
    ============================================================ */
@@ -903,6 +903,14 @@ input, select, textarea {
 .activity-card-header-row .activity-card-name {
   flex: 1;
   margin-bottom: 8px;
+}
+
+.activity-card-keterangan {
+  font-size: 13px;
+  color: #1b1b1b;
+  line-height: 1.55;
+  margin: 0 0 10px 0;
+  white-space: pre-line;
 }
 
 /* ============================================================

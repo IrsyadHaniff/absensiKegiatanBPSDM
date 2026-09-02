@@ -236,6 +236,14 @@
   line-height: 1.45;
 }
 
+.presensi-kegiatan-keterangan {
+  font-size: 13.5px;
+  color: var(--color-gray-90, #1b1b1b);
+  line-height: 1.6;
+  margin: 4px 0 4px;
+  white-space: pre-line;
+}
+
 .presensi-kegiatan-meta {
   display: flex;
   flex-wrap: wrap;
