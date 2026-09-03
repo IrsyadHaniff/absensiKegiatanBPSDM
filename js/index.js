@@ -20,13 +20,13 @@
  *  │ "Kegiatan Lainnya"                                          │
  *  │   Kegiatan yang sudah melewati jamSelesai (termasuk         │
  *  │   kegiatan hari ini yang sudah selesai), TAPI masih dalam   │
- *  │   grace period 24 jam → tombol presensi & konfirmasi masih  │
+ *  │   grace period 24 jam - tombol presensi & konfirmasi masih  │
  *  │   aktif.                                                     │
- *  │   Setelah grace period habis → tombol tidak ditampilkan.    │
+ *  │   Setelah grace period habis - tombol tidak ditampilkan.    │
  *  └─────────────────────────────────────────────────────────────┘
  */
 
-'use strict';
+"use strict";
 
 /* ============================================================
    KONFIGURASI
@@ -34,24 +34,24 @@
 const SPREADSHEET_URL =
   'https://script.google.com/macros/s/AKfycbzXnuyvcNt6Z9NSoavRjKFIWSgK45-rweqNGYy2WneFn1-G4hu-OCqNsvgxaVyTYePQjg/exec';
 
-const FETCH_TIMEOUT  = 15000; // ms
+const FETCH_TIMEOUT = 15000; // ms
 const GRACE_PERIOD_MS = 24 * 60 * 60 * 1000; // 24 jam dalam milidetik
 
 /* ============================================================
    UTILITIES
    ============================================================ */
 
-/** "2026-08-22" → Date object tengah malam lokal */
+/** "2026-08-22" - Date object tengah malam lokal */
 function parseDate(dateStr) {
   if (!dateStr) return null;
-  const d = new Date(dateStr + 'T00:00:00');
+  const d = new Date(dateStr + "T00:00:00");
   return isNaN(d) ? null : d;
 }
 
 /**
  * Gabungkan tanggal + jam menjadi Date object.
  * jam bisa "08:00" atau kosong.
- * Jika jam kosong → kembalikan tengah malam tanggal tersebut.
+ * Jika jam kosong kembalikan tengah malam tanggal tersebut.
  */
 function parseDateTime(dateStr, jamStr) {
   if (!dateStr) return null;
@@ -63,32 +63,32 @@ function parseDateTime(dateStr, jamStr) {
 /** Format tanggal panjang: "Jumat, 22 Agustus 2026" */
 function formatTanggalPanjang(dateStr) {
   const d = parseDate(dateStr);
-  if (!d) return dateStr || '-';
-  return d.toLocaleDateString('id-ID', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
+  if (!d) return dateStr || "-";
+  return d.toLocaleDateString("id-ID", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
   });
 }
 
-/** Format jam "08:00" → "08.00" */
+/** Format jam "08:00"- "08.00" */
 function formatJam(jam) {
-  return jam ? jam.replace(':', '.') : '';
+  return jam ? jam.replace(":", ".") : "";
 }
 
 /** Escape HTML */
 function esc(str) {
-  return String(str || '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
+  return String(str || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
 }
 
 /** Encode URL parameter */
 function enc(str) {
-  return encodeURIComponent(str || '');
+  return encodeURIComponent(str || "");
 }
 
 /** Apakah dateStr adalah hari ini? */
@@ -96,11 +96,7 @@ function isToday(dateStr) {
   const d = parseDate(dateStr);
   if (!d) return false;
   const now = new Date();
-  return (
-    d.getFullYear() === now.getFullYear() &&
-    d.getMonth()    === now.getMonth()    &&
-    d.getDate()     === now.getDate()
-  );
+  return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth() && d.getDate() === now.getDate();
 }
 
 /** Apakah tanggal sudah lewat dari hari ini? */
@@ -127,7 +123,7 @@ function isFutureDate(dateStr) {
  * Jika tidak ada jamSelesai, anggap belum selesai (sepanjang hari).
  */
 function isPastEndTime(dateStr, jamSelesai) {
-  if (!jamSelesai) return false; // tidak ada jam selesai → belum selesai
+  if (!jamSelesai) return false; // tidak ada jam selesai = belum selesai
   const endDt = parseDateTime(dateStr, jamSelesai);
   if (!endDt) return false;
   return new Date() > endDt;
@@ -139,9 +135,7 @@ function isPastEndTime(dateStr, jamSelesai) {
  */
 function isInGracePeriod(dateStr, jamSelesai) {
   // Jika tidak ada jamSelesai: gunakan akhir hari (23:59) sebagai baseline
-  const endDt = jamSelesai
-    ? parseDateTime(dateStr, jamSelesai)
-    : parseDateTime(dateStr, '23:59');
+  const endDt = jamSelesai ? parseDateTime(dateStr, jamSelesai) : parseDateTime(dateStr, "23:59");
   if (!endDt) return false;
   const graceEnd = new Date(endDt.getTime() + GRACE_PERIOD_MS);
   return new Date() <= graceEnd;
@@ -150,7 +144,7 @@ function isInGracePeriod(dateStr, jamSelesai) {
 /** Fetch dengan timeout */
 async function fetchWithTimeout(url, ms) {
   const ctrl = new AbortController();
-  const tid  = setTimeout(() => ctrl.abort(), ms);
+  const tid = setTimeout(() => ctrl.abort(), ms);
   try {
     const res = await fetch(url, { signal: ctrl.signal });
     clearTimeout(tid);
@@ -165,65 +159,65 @@ async function fetchWithTimeout(url, ms) {
    DERIVE STATUS OTOMATIS BERDASARKAN WAKTU NYATA
    ============================================================
    Override status dari spreadsheet dengan kalkulasi real-time:
-   - Belum mulai (now < jamMulai)        → "Akan Datang"
-   - Sedang berjalan (jamMulai ≤ now ≤ jamSelesai) → "Sedang Berlangsung"
-   - Sudah lewat (now > jamSelesai)      → "Selesai"
+   - Belum mulai (now < jamMulai)        = "Akan Datang"
+   - Sedang berjalan (jamMulai ≤ now ≤ jamSelesai) = "Sedang Berlangsung"
+   - Sudah lewat (now > jamSelesai)      = "Selesai"
    ============================================================ */
 function deriveStatus(dateStr, jam, jamSelesai) {
   const now = new Date();
 
   // Jika tanggal belum tiba sama sekali
-  if (isFutureDate(dateStr)) return 'Akan Datang';
+  if (isFutureDate(dateStr)) return "Akan Datang";
 
   // Jika tanggal sudah lewat (kemarin atau lebih lama)
-  if (isPastDate(dateStr)) return 'Selesai';
+  if (isPastDate(dateStr)) return "Selesai";
 
   // Tanggal = hari ini, cek jam
-  const startDt = jam      ? parseDateTime(dateStr, jam)       : null;
-  const endDt   = jamSelesai ? parseDateTime(dateStr, jamSelesai) : null;
+  const startDt = jam ? parseDateTime(dateStr, jam) : null;
+  const endDt = jamSelesai ? parseDateTime(dateStr, jamSelesai) : null;
 
-  if (endDt && now > endDt)   return 'Selesai';
-  if (startDt && now < startDt) return 'Akan Datang';
+  if (endDt && now > endDt) return "Selesai";
+  if (startDt && now < startDt) return "Akan Datang";
 
   // now >= startDt dan (endDt null atau now <= endDt)
-  return 'Sedang Berlangsung';
+  return "Sedang Berlangsung";
 }
 
-  //  Setiap kegiatan masuk ke tepat satu bucket:
+//  Setiap kegiatan masuk ke tepat satu bucket:
 
-  //  todayActive  → Hari Ini: tanggal = hari ini DAN belum lewat jam selesai
-  //  todayPast    → Lainnya:  tanggal = hari ini TAPI sudah lewat jam selesai
-  //                           (masuk "Lainnya" tapi masih grace period)
-  //  upcoming     → Akan Datang: tanggal > hari ini
-  //  past         → Lainnya: tanggal < hari ini
-  //                           (bisa masih grace period atau sudah habis)
+//  todayActive  - Hari Ini: tanggal = hari ini DAN belum lewat jam selesai
+//  todayPast    - Lainnya:  tanggal = hari ini TAPI sudah lewat jam selesai
+//                           (masuk "Lainnya" tapi masih grace period)
+//  upcoming     - Akan Datang: tanggal > hari ini
+//  past         - Lainnya: tanggal < hari ini
+//                           (bisa masih grace period atau sudah habis)
 function kategorikan(kegiatan) {
   const todayActive = [];
-  const upcoming    = [];
-  const others      = []; // sudah lewat / hari ini tapi jam sudah habis
+  const upcoming = [];
+  const others = []; // sudah lewat / hari ini tapi jam sudah habis
 
   for (const k of kegiatan) {
     if (isFutureDate(k.tanggal)) {
-      // Tanggal besok atau setelahnya → Akan Datang
+      // Tanggal besok atau setelahnya - Akan Datang
       upcoming.push(k);
     } else if (isToday(k.tanggal)) {
       if (isPastEndTime(k.tanggal, k.jamSelesai)) {
-        // Hari ini tapi jam sudah lewat → Lainnya (grace period)
+        // Hari ini tapi jam sudah lewat - Lainnya (grace period)
         others.push(k);
       } else {
-        // Hari ini dan belum selesai → Kegiatan Hari Ini
+        // Hari ini dan belum selesai - Kegiatan Hari Ini
         todayActive.push(k);
       }
     } else {
-      // Tanggal sudah lewat → Lainnya
+      // Tanggal sudah lewat - Lainnya
       others.push(k);
     }
   }
 
   // Sort masing-masing
-  const byJam  = (a, b) => (a.jam || '').localeCompare(b.jam || '');
+  const byJam = (a, b) => (a.jam || "").localeCompare(b.jam || "");
   const byDate = (a, b) => {
-    const t = (a.tanggal || '').localeCompare(b.tanggal || '');
+    const t = (a.tanggal || "").localeCompare(b.tanggal || "");
     return t !== 0 ? t : byJam(a, b);
   };
   const byDateDesc = (a, b) => -byDate(a, b); // terbaru dulu di "Lainnya"
@@ -239,15 +233,15 @@ function kategorikan(kegiatan) {
    FETCH DATA
    ============================================================ */
 async function fetchKegiatan() {
-  const elLoading      = document.getElementById('today-loading');
-  const elError        = document.getElementById('fetch-error');
-  const secToday       = document.getElementById('today-section');
-  const elTodayList    = document.getElementById('today-list');
-  const elTodayEmpty   = document.getElementById('today-empty');
-  const secUpcoming    = document.getElementById('upcoming-section');
-  const elUpcomingList = document.getElementById('upcoming-list');
-  const secOther       = document.getElementById('other-section');
-  const elOtherList    = document.getElementById('other-list');
+  const elLoading = document.getElementById("today-loading");
+  const elError = document.getElementById("fetch-error");
+  const secToday = document.getElementById("today-section");
+  const elTodayList = document.getElementById("today-list");
+  const elTodayEmpty = document.getElementById("today-empty");
+  const secUpcoming = document.getElementById("upcoming-section");
+  const elUpcomingList = document.getElementById("upcoming-list");
+  const secOther = document.getElementById("other-section");
+  const elOtherList = document.getElementById("other-list");
 
   // Reset state
   show(elLoading);
@@ -261,10 +255,10 @@ async function fetchKegiatan() {
     const res = await fetchWithTimeout(url, FETCH_TIMEOUT);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-    const data     = await res.json();
+    const data = await res.json();
     const kegiatan = (data.kegiatan || [])
-      .filter(k => k.nama && k.nama.trim() !== '')
-      .map(k => ({
+      .filter((k) => k.nama && k.nama.trim() !== "")
+      .map((k) => ({
         ...k,
         // Override status dengan kalkulasi real-time
         status: deriveStatus(k.tanggal, k.jam, k.jamSelesai),
@@ -280,23 +274,22 @@ async function fetchKegiatan() {
     } else {
       hide(elTodayEmpty);
       show(elTodayList);
-      renderKegiatanList(elTodayList, todayActive, 'today');
+      renderKegiatanList(elTodayList, todayActive, "today");
     }
 
     // --- Section 2: Akan Datang ---
     if (upcoming.length > 0) {
       show(secUpcoming);
-      renderKegiatanList(elUpcomingList, upcoming, 'upcoming');
+      renderKegiatanList(elUpcomingList, upcoming, "upcoming");
     }
 
     // --- Section 3: Lainnya ---
     if (others.length > 0) {
       show(secOther);
-      renderKegiatanList(elOtherList, others, 'other');
+      renderKegiatanList(elOtherList, others, "other");
     }
-
   } catch (err) {
-    console.error('[fetchKegiatan]', err);
+    console.error("[fetchKegiatan]", err);
     show(elError);
   } finally {
     hide(elLoading);
@@ -310,51 +303,49 @@ async function fetchKegiatan() {
  * type: 'today' | 'upcoming' | 'other'
  *
  * Tombol aksi:
- *  - today    → selalu tampilkan presensi + konfirmasi
- *  - upcoming → tidak tampilkan tombol
- *  - other    → tampilkan hanya jika masih grace period
+ *  - today   = selalu tampilkan presensi + konfirmasi
+ *  - upcoming = tidak tampilkan tombol
+ *  - other    = tampilkan hanya jika masih grace period
  */
 function renderKegiatanList(container, list, type) {
   if (!container) return;
 
-  container.innerHTML = list.map((k, i) => {
-    const jamStr = k.jam
-      ? `${formatJam(k.jam)}${k.jamSelesai ? ' – ' + formatJam(k.jamSelesai) : ''} WIB`
-      : '';
+  container.innerHTML = list
+    .map((k, i) => {
+      const jamStr = k.jam ? `${formatJam(k.jam)}${k.jamSelesai ? " – " + formatJam(k.jamSelesai) : ""} WIB` : "";
 
-    const isFeatured  = type === 'today';
-    const cardClass   = isFeatured
-      ? 'activity-card activity-card-featured animate-fade-up'
-      : 'activity-card animate-fade-up';
+      const isFeatured = type === "today";
+      const cardClass = isFeatured ? "activity-card activity-card-featured animate-fade-up" : "activity-card animate-fade-up";
 
-    // Apakah tombol aksi ditampilkan?
-    let showActions = false;
-    if (type === 'today') {
-      showActions = true;
-    } else if (type === 'other') {
-      showActions = isInGracePeriod(k.tanggal, k.jamSelesai);
-    }
-    // type 'upcoming' → showActions tetap false
+      // Apakah tombol aksi ditampilkan?
+      let showActions = false;
+      if (type === "today") {
+        showActions = true;
+      } else if (type === "other") {
+        showActions = isInGracePeriod(k.tanggal, k.jamSelesai);
+      }
+      // type 'upcoming' - showActions tetap false
 
-    const qNama      = enc(k.nama);
-    const qLokasi    = enc(k.lokasi);
-    const qTanggal   = enc(k.tanggal    || '');
-    const qJam       = enc(k.jam        || '');
-    const qJamSelesai= enc(k.jamSelesai || '');
-    const qStatus    = enc(k.status     || '');
-    const qId        = enc(k.id         || '');
-    const qKeterangan= enc(k.keterangan || '');
+      const qNama = enc(k.nama);
+      const qLokasi = enc(k.lokasi);
+      const qTanggal = enc(k.tanggal || "");
+      const qJam = enc(k.jam || "");
+      const qJamSelesai = enc(k.jamSelesai || "");
+      const qStatus = enc(k.status || "");
+      const qId = enc(k.id || "");
+      const qKeterangan = enc(k.keterangan || "");
 
-    // Label grace period (untuk "other" yang masih bisa presensi)
-    const graceLabel = (type === 'other' && showActions)
-      ? `<div class="activity-grace-notice" role="note">
+      // Label grace period (untuk "other" yang masih bisa presensi)
+      const graceLabel =
+        type === "other" && showActions
+          ? `<div class="activity-grace-notice" role="note">
            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
            Presensi masih tersedia hingga 24 jam setelah kegiatan selesai
          </div>`
-      : '';
+          : "";
 
-    const actionsHtml = showActions
-      ? `<div class="activity-card-actions">
+      const actionsHtml = showActions
+        ? `<div class="activity-card-actions">
            ${graceLabel}
            <div class="activity-card-btns">
              <a href="presensi.html?id=${qId}&kegiatan=${qNama}&lokasi=${qLokasi}&tanggal=${qTanggal}&jam=${qJam}&jamSelesai=${qJamSelesai}&status=${qStatus}&keterangan=${qKeterangan}"
@@ -376,7 +367,7 @@ function renderKegiatanList(container, list, type) {
              </a>
            </div>
          </div>`
-      : (type === 'upcoming'
+        : type === "upcoming"
           ? `<div class="activity-card-actions">
                <span class="activity-card-upcoming-label">
                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -395,10 +386,9 @@ function renderKegiatanList(container, list, type) {
                  </svg>
                  Presensi sudah ditutup
                </span>
-             </div>`
-        );
+             </div>`;
 
-    return `
+      return `
       <li class="${cardClass}" role="article" style="animation-delay:${i * 0.07}s">
         <div class="activity-card-icon" aria-hidden="true">
           ${getStatusIcon(k.status, type)}
@@ -408,7 +398,7 @@ function renderKegiatanList(container, list, type) {
             <h2 class="activity-card-name">${esc(k.nama)}</h2>
             ${renderStatusBadge(k.status)}
           </div>
-          ${k.keterangan ? `<p class="activity-card-keterangan">${esc(k.keterangan)}</p>` : ''}
+          ${k.keterangan ? `<p class="activity-card-keterangan">${esc(k.keterangan)}</p>` : ""}
           <div class="activity-card-meta" role="list">
             <div class="activity-card-meta-item" role="listitem">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -419,30 +409,39 @@ function renderKegiatanList(container, list, type) {
               </svg>
               <span>${formatTanggalPanjang(k.tanggal)}</span>
             </div>
-            ${jamStr ? `
+            ${
+              jamStr
+                ? `
             <div class="activity-card-meta-item" role="listitem">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <circle cx="12" cy="12" r="10"/>
                 <polyline points="12 6 12 12 16 14"/>
               </svg>
               <span>${esc(jamStr)}</span>
-            </div>` : ''}
-            ${k.lokasi ? `
+            </div>`
+                : ""
+            }
+            ${
+              k.lokasi
+                ? `
             <div class="activity-card-meta-item" role="listitem">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
                 <circle cx="12" cy="10" r="3"/>
               </svg>
               <span>${esc(k.lokasi)}</span>
-            </div>` : ''}
+            </div>`
+                : ""
+            }
           </div>
           ${actionsHtml}
         </div>
       </li>`;
-  }).join('');
+    })
+    .join("");
 
   // Re-init animation observer untuk elemen yang baru dirender
-  initAnimationObserver(container.querySelectorAll('.animate-fade-up'));
+  initAnimationObserver(container.querySelectorAll(".animate-fade-up"));
 }
 
 /* ============================================================
@@ -450,16 +449,16 @@ function renderKegiatanList(container, list, type) {
    ============================================================ */
 function renderStatusBadge(status) {
   const map = {
-    'Sedang Berlangsung': ['badge-status badge-berlangsung', 'Sedang Berlangsung'],
-    'Akan Datang':        ['badge-status badge-datang',      'Akan Datang'],
-    'Selesai':            ['badge-status badge-selesai',     'Selesai'],
+    "Sedang Berlangsung": ["badge-status badge-berlangsung", "Sedang Berlangsung"],
+    "Akan Datang": ["badge-status badge-datang", "Akan Datang"],
+    Selesai: ["badge-status badge-selesai", "Selesai"],
   };
-  const [cls, label] = map[status] || ['badge-status badge-default', status || ''];
+  const [cls, label] = map[status] || ["badge-status badge-default", status || ""];
   return `<span class="${cls}">${esc(label)}</span>`;
 }
 
 function getStatusIcon(status, type) {
-  if (type === 'upcoming') {
+  if (type === "upcoming") {
     return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
       <line x1="16" y1="2" x2="16" y2="6"/>
@@ -467,7 +466,7 @@ function getStatusIcon(status, type) {
       <line x1="3" y1="10" x2="21" y2="10"/>
     </svg>`;
   }
-  if (status === 'Selesai' || type === 'other') {
+  if (status === "Selesai" || type === "other") {
     return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <circle cx="12" cy="12" r="10"/>
       <polyline points="12 6 12 12 16 14"/>
@@ -485,27 +484,31 @@ function getStatusIcon(status, type) {
 /* ============================================================
    DOM HELPERS
    ============================================================ */
-function show(el) { if (el) el.style.display = ''; }
-function hide(el) { if (el) el.style.display = 'none'; }
+function show(el) {
+  if (el) el.style.display = "";
+}
+function hide(el) {
+  if (el) el.style.display = "none";
+}
 
 /* ============================================================
    INTERSECTION OBSERVER — animate on scroll
    ============================================================ */
 function initAnimationObserver(elements) {
-  if (!('IntersectionObserver' in window)) return;
+  if (!("IntersectionObserver" in window)) return;
   const obs = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.style.animationPlayState = 'running';
+          entry.target.style.animationPlayState = "running";
           obs.unobserve(entry.target);
         }
       });
     },
-    { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+    { threshold: 0.08, rootMargin: "0px 0px -40px 0px" },
   );
   elements.forEach((el) => {
-    el.style.animationPlayState = 'paused';
+    el.style.animationPlayState = "paused";
     obs.observe(el);
   });
 }
@@ -534,47 +537,44 @@ async function fetchKegiatanSilent() {
     const res = await fetchWithTimeout(url, FETCH_TIMEOUT);
     if (!res.ok) return; // gagal diam-diam, tidak ganggu UI
 
-    const data     = await res.json();
-    const kegiatan = (data.kegiatan || [])
-      .filter(k => k.nama && k.nama.trim() !== '')
-      .map(k => ({ ...k, status: deriveStatus(k.tanggal, k.jam, k.jamSelesai) }));
+    const data = await res.json();
+    const kegiatan = (data.kegiatan || []).filter((k) => k.nama && k.nama.trim() !== "").map((k) => ({ ...k, status: deriveStatus(k.tanggal, k.jam, k.jamSelesai) }));
 
     const { todayActive, upcoming, others } = kategorikan(kegiatan);
 
     // Re-render semua section tanpa sentuh loading/error state
-    const elTodayList    = document.getElementById('today-list');
-    const elTodayEmpty   = document.getElementById('today-empty');
-    const secUpcoming    = document.getElementById('upcoming-section');
-    const elUpcomingList = document.getElementById('upcoming-list');
-    const secOther       = document.getElementById('other-section');
-    const elOtherList    = document.getElementById('other-list');
+    const elTodayList = document.getElementById("today-list");
+    const elTodayEmpty = document.getElementById("today-empty");
+    const secUpcoming = document.getElementById("upcoming-section");
+    const elUpcomingList = document.getElementById("upcoming-list");
+    const secOther = document.getElementById("other-section");
+    const elOtherList = document.getElementById("other-list");
 
     // Section 1 — Hari Ini
     if (todayActive.length === 0) {
-      if (elTodayList)  elTodayList.style.display  = 'none';
-      if (elTodayEmpty) elTodayEmpty.style.display = '';
+      if (elTodayList) elTodayList.style.display = "none";
+      if (elTodayEmpty) elTodayEmpty.style.display = "";
     } else {
-      if (elTodayEmpty) elTodayEmpty.style.display = 'none';
-      if (elTodayList)  elTodayList.style.display  = '';
-      renderKegiatanList(elTodayList, todayActive, 'today');
+      if (elTodayEmpty) elTodayEmpty.style.display = "none";
+      if (elTodayList) elTodayList.style.display = "";
+      renderKegiatanList(elTodayList, todayActive, "today");
     }
 
     // Section 2 — Akan Datang
     if (upcoming.length > 0) {
-      if (secUpcoming)    secUpcoming.style.display    = '';
-      if (elUpcomingList) renderKegiatanList(elUpcomingList, upcoming, 'upcoming');
+      if (secUpcoming) secUpcoming.style.display = "";
+      if (elUpcomingList) renderKegiatanList(elUpcomingList, upcoming, "upcoming");
     } else {
-      if (secUpcoming) secUpcoming.style.display = 'none';
+      if (secUpcoming) secUpcoming.style.display = "none";
     }
 
     // Section 3 — Lainnya
     if (others.length > 0) {
-      if (secOther)    secOther.style.display    = '';
-      if (elOtherList) renderKegiatanList(elOtherList, others, 'other');
+      if (secOther) secOther.style.display = "";
+      if (elOtherList) renderKegiatanList(elOtherList, others, "other");
     } else {
-      if (secOther) secOther.style.display = 'none';
+      if (secOther) secOther.style.display = "none";
     }
-
   } catch {
     // Gagal diam-diam — tidak tampilkan error, biarkan data lama tetap tampil
   }
@@ -589,19 +589,21 @@ function initClock() {
 }
 
 function updateClock() {
-  const now     = new Date();
-  const elTime  = document.getElementById('header-time');
-  const elDate  = document.getElementById('header-date');
+  const now = new Date();
+  const elTime = document.getElementById("header-time");
+  const elDate = document.getElementById("header-date");
 
   if (elTime) {
-    elTime.textContent = now.toLocaleTimeString('id-ID', {
-      hour: '2-digit', minute: '2-digit', second: '2-digit',
+    elTime.textContent = now.toLocaleTimeString("id-ID", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
     });
   }
 
   if (elDate) {
-    const days   = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
-    const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agt','Sep','Okt','Nov','Des'];
+    const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+    const months = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agt", "Sep", "Okt", "Nov", "Des"];
     elDate.textContent = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
   }
 }
@@ -610,35 +612,37 @@ function updateClock() {
    STICKY HEADER
    ============================================================ */
 function initStickyHeader() {
-  const header = document.querySelector('.site-header');
+  const header = document.querySelector(".site-header");
   if (!header) return;
-  window.addEventListener('scroll', () => {
-    header.style.boxShadow = window.scrollY > 8
-      ? '0 4px 24px rgba(0,0,0,0.12)'
-      : '0 2px 12px rgba(0,0,0,0.06)';
-  }, { passive: true });
+  window.addEventListener(
+    "scroll",
+    () => {
+      header.style.boxShadow = window.scrollY > 8 ? "0 4px 24px rgba(0,0,0,0.12)" : "0 2px 12px rgba(0,0,0,0.06)";
+    },
+    { passive: true },
+  );
 }
 
 /* ============================================================
    LOGIN BUTTON (placeholder)
    ============================================================ */
 function initLoginButton() {
-  const btn = document.getElementById('btn-login');
+  const btn = document.getElementById("btn-login");
   if (!btn) return;
-  btn.addEventListener('click', (e) => {
+  btn.addEventListener("click", (e) => {
     e.preventDefault();
-    alert('Fitur login belum tersedia.');
+    alert("Fitur login belum tersedia.");
   });
 }
 
 /* ============================================================
    INIT
    ============================================================ */
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   initClock();
   initStickyHeader();
   initLoginButton();
-  document.querySelectorAll('.badge-dot').forEach(d => d.setAttribute('aria-hidden', 'true'));
+  document.querySelectorAll(".badge-dot").forEach((d) => d.setAttribute("aria-hidden", "true"));
   fetchKegiatan();
   startAutoRefresh(); // background refresh setiap 1 menit
 });
