@@ -14,8 +14,10 @@
 
 /* ──────────────────────────────────────────────
    URL Google Apps Script
+   URL KHUSUS Kegiatan & Presensi (spreadsheet baru)
+   Ganti nilai ini setelah deploy Apps Script kegiatan yang baru
    ────────────────────────────────────────────── */
-var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzXnuyvcNt6Z9NSoavRjKFIWSgK45-rweqNGYy2WneFn1-G4hu-OCqNsvgxaVyTYePQjg/exec";
+var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzKwr0mZkJfKBe9Kbwd5g7FUk1H4bJNa5tLrHy2-v7TAwa7dGql9zaa06FjFlmWKAt7/exec";
 
 (function () {
   /* ============================================================

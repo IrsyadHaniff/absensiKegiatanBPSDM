@@ -32,7 +32,7 @@
    KONFIGURASI
    ============================================================ */
 const SPREADSHEET_URL =
-  'https://script.google.com/macros/s/AKfycbzXnuyvcNt6Z9NSoavRjKFIWSgK45-rweqNGYy2WneFn1-G4hu-OCqNsvgxaVyTYePQjg/exec';
+  'https://script.google.com/macros/s/AKfycbzKwr0mZkJfKBe9Kbwd5g7FUk1H4bJNa5tLrHy2-v7TAwa7dGql9zaa06FjFlmWKAt7/exec';
 
 const FETCH_TIMEOUT = 15000; // ms
 const GRACE_PERIOD_MS = 24 * 60 * 60 * 1000; // 24 jam dalam milidetik
