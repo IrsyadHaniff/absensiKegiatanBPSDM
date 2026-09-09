@@ -1,6 +1,4 @@
 /**
- * presensi.js - Sistem Presensi Elektronik Pusbangkom
- * Halaman: Form Presensi (presensi.html)
  *
  * Fitur:
  * - Ambil nama & lokasi kegiatan dari URL query string

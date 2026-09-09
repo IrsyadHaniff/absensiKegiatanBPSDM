@@ -1,6 +1,7 @@
 ﻿/* ============================================================
    Sistem Presensi Elektronik Pusbangkom
-   styles.css — Design System & Component Library
+   Version 1.0.0
+   Create by Irsyad Hanif Munawar
    ============================================================ */
 
 /* --- CSS Custom Properties (Design Tokens) --- */
@@ -342,7 +343,7 @@ input, select, textarea {
 }
 
 /* ============================================================
-   INDEX.HTML — PAGE STYLES
+   INDEX.HTML 
    ============================================================ */
 
 /* --- Site Header --- */
@@ -739,7 +740,7 @@ input, select, textarea {
 .animate-delay-6 { animation-delay: 0.42s; }
 
 /* ============================================================
-   RESPONSIVE — MOBILE FIRST BREAKPOINTS
+   RESPONSIVE MOBILE 
    ============================================================ */
 
 @media (max-width: 768px) {
@@ -841,7 +842,7 @@ input, select, textarea {
 }
 
 /* ============================================================
-   DYNAMIC KEGIATAN — Loading / Empty / Error states
+   DYNAMIC KEGIATAN - Loading / Empty / Error states
    ============================================================ */
 
 .activity-loading {
@@ -890,7 +891,7 @@ input, select, textarea {
 }
 
 /* ============================================================
-   ACTIVITY CARD — header row (nama + badge)
+   ACTIVITY CARD - header row (nama + badge)
    ============================================================ */
 .activity-card-header-row {
   display: flex;
@@ -914,7 +915,7 @@ input, select, textarea {
 }
 
 /* ============================================================
-   STATUS BADGE — di dalam kartu
+   STATUS BADGE di dalam kartu
    ============================================================ */
 .badge-status {
   display: inline-flex;

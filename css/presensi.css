@@ -1,11 +1,4 @@
-/* ============================================================
-   presensi.css — Tema Halaman Form Presensi
-   Clean Light + Gold Accent (konsisten dengan konfirmasi)
-   ============================================================ */
-
-/* ============================================================
-   BODY OVERRIDE — Clean Light Theme
-   ============================================================ */
+/* body style */
 .presensi-body {
   background: var(--color-bg);
   min-height: 100vh;
@@ -71,7 +64,7 @@
 }
 
 /* ============================================================
-   HEADER PRESENSI (konsisten dengan konfirmasi-header)
+   HEADER PRESENSI
    ============================================================ */
 .presensi-header {
   position: sticky;
@@ -132,7 +125,7 @@
   font-weight: 400;
 }
 
-/* Tombol kembali (konsisten dengan konfirmasi-header-back) */
+/* Tombol kembali */
 .presensi-header-back {
   display: flex;
   align-items: center;
@@ -194,7 +187,7 @@
 }
 
 /* ============================================================
-   SECTION LABEL — konsisten dengan form-section-label
+   SECTION LABEL 
    ============================================================ */
 .presensi-section-label {
   font-size: 10px;
@@ -629,7 +622,7 @@
 }
 
 /* ============================================================
-   TURNSTILE MOCK — konsisten dengan konfirmasi
+   TURNSTILE MOCK
    ============================================================ */
 .presensi-turnstile-mock {
   display: inline-flex;
@@ -745,7 +738,7 @@
 }
 
 /* ============================================================
-   SUBMIT BUTTON — konsisten dengan btn-gold konfirmasi
+   SUBMIT BUTTON
    ============================================================ */
 .presensi-submit-wrap {
   margin-top: var(--space-2);

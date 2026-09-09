@@ -1,29 +1,27 @@
 /**
- * index.js — Sistem Presensi Elektronik Pusbangkom
- * Halaman: Daftar Kegiatan (index.html)
  *
  * Logika kategorisasi kegiatan:
  *
  *  NOW = waktu saat ini
  *  GRACE = 24 jam setelah jamSelesai kegiatan
  *
- *  ┌─────────────────────────────────────────────────────────────┐
- *  │ "Kegiatan Hari Ini"                                         │
- *  │   Kegiatan yang tanggalnya = hari ini DAN belum melewati    │
- *  │   jamSelesai (atau belum ada jamSelesai).                    │
- *  │   Tombol presensi & konfirmasi aktif.                        │
- *  ├─────────────────────────────────────────────────────────────┤
- *  │ "Kegiatan Akan Datang"                                      │
- *  │   Kegiatan dengan tanggal > hari ini.                        │
- *  │   Tombol presensi & konfirmasi TIDAK ditampilkan.            │
- *  ├─────────────────────────────────────────────────────────────┤
- *  │ "Kegiatan Lainnya"                                          │
- *  │   Kegiatan yang sudah melewati jamSelesai (termasuk         │
- *  │   kegiatan hari ini yang sudah selesai), TAPI masih dalam   │
- *  │   grace period 24 jam - tombol presensi & konfirmasi masih  │
- *  │   aktif.                                                     │
- *  │   Setelah grace period habis - tombol tidak ditampilkan.    │
- *  └─────────────────────────────────────────────────────────────┘
+ * 
+ *   "Kegiatan Hari Ini"                                         
+ *     Kegiatan yang tanggalnya = hari ini DAN belum melewati    
+ *     jamSelesai (atau belum ada jamSelesai).                    
+ *     Tombol presensi & konfirmasi aktif.                        
+ *  ------------------------------------------------------------
+ *   "Kegiatan Akan Datang"                                      
+ *     Kegiatan dengan tanggal > hari ini.                        
+ *     Tombol presensi & konfirmasi TIDAK ditampilkan.            
+ *  ------------------------------------------------------------
+ *   "Kegiatan Lainnya"                                          
+ *     Kegiatan yang sudah melewati jamSelesai (termasuk         
+ *     kegiatan hari ini yang sudah selesai), TAPI masih dalam   
+ *     grace period 24 jam - tombol presensi & konfirmasi masih  
+ *     aktif.                                                     
+ *     Setelah grace period habis - tombol tidak ditampilkan.    
+ *  ------------------------------------------------------------
  */
 
 "use strict";
