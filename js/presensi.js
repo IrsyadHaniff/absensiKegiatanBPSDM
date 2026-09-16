@@ -101,16 +101,12 @@ var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzKwr0mZkJfKBe9Kb
 
   /* ============================================================
      2. CLOUDFLARE TURNSTILE — explicit rendering (menghindari race condition)
-     Cloudflare memanggil window.onloadTurnstileCallback setelah API siap.
-     Lalu kita render widget secara manual dengan callbacks via closure,
-     sehingga tidak ada risiko callback dipanggil sebelum variabel siap.
      ============================================================ */
   var turnstileToken = null;
   var isVerified     = false;
 
   /**
    * Dipanggil oleh Cloudflare API setelah scriptnya selesai dimuat.
-   * Kita render widget di sini agar callbacks pasti sudah terdaftar.
    */
   window.onloadTurnstileCallback = function () {
     var container = document.getElementById("presensi-turnstile-widget");

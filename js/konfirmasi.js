@@ -34,7 +34,6 @@
   /* ============================================================
      CLOUDFLARE TURNSTILE — explicit rendering (menghindari race condition)
      Cloudflare memanggil window.onloadTurnstileCallback setelah API siap.
-     Widget dirender manual dengan callbacks via closure.
      ============================================================ */
   const btnSubmit  = document.getElementById('btn-submit');
   const submitHint = document.getElementById('submit-hint');
@@ -44,7 +43,6 @@
 
   /**
    * Dipanggil oleh Cloudflare API setelah scriptnya selesai dimuat.
-   * Kita render widget di sini agar callbacks pasti sudah terdaftar.
    */
   window.onloadTurnstileCallback = function () {
     const container = document.getElementById('konfirmasi-turnstile-widget');
