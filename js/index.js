@@ -58,7 +58,7 @@ function parseDateTime(dateStr, jamStr) {
   return isNaN(d) ? parseDate(dateStr) : d;
 }
 
-/** Format tanggal panjang: "Jumat, 22 Agustus 2026" */
+/** Format tanggal "Jumat, 22 Agustus 2026" */
 function formatTanggalPanjang(dateStr) {
   const d = parseDate(dateStr);
   if (!d) return dateStr || "-";
